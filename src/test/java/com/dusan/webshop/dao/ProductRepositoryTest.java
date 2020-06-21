@@ -44,6 +44,7 @@ class ProductRepositoryTest {
         product.setQuantity(15);
         product.setWeight(new BigDecimal(0.2));
         product.setShortDescription("Mobile phone");
+        product.setMainImage("image1.jpg");
         product.getImages().add("image1.jpg");
         product.getImages().add("image2.jpg");
         product.setProductBrand(brand);

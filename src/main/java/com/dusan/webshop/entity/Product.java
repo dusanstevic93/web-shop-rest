@@ -30,6 +30,8 @@ public class Product {
 
     private BigDecimal weight;
 
+    private String mainImage;
+
     @ElementCollection
     @CollectionTable(name = "product_image", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "image")
