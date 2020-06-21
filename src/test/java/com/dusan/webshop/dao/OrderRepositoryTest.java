@@ -3,6 +3,7 @@ package com.dusan.webshop.dao;
 import com.dusan.webshop.entity.Address;
 import com.dusan.webshop.entity.Customer;
 import com.dusan.webshop.entity.Order;
+import com.dusan.webshop.entity.OrderItem;
 import com.dusan.webshop.entity.enums.OrderStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,11 @@ class OrderRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @Test
-    @Sql({"classpath:scripts/insert-roles.sql", "classpath:scripts/insert-customer.sql"})
+    @Sql("classpath:scripts/create-order-test-data.sql")
     void testSaveOrder() {
         // given
         Order order = new Order();
@@ -48,6 +52,22 @@ class OrderRepositoryTest {
 
         Customer customer = (Customer) userRepository.findById(1L).get();
         order.setCustomer(customer);
+
+        OrderItem item1 = new OrderItem();
+        item1.setProduct(productRepository.getOne(1L));
+        item1.setOrder(order);
+        item1.setPrice(new BigDecimal(500));
+        item1.setWeight(new BigDecimal(0.5));
+        item1.setQuantity(10);
+        order.addOrderItem(item1);
+
+        OrderItem item2 = new OrderItem();
+        item2.setProduct(productRepository.getOne(2L));
+        item2.setOrder(order);
+        item2.setPrice(new BigDecimal(500));
+        item2.setWeight(new BigDecimal(0.5));
+        item2.setQuantity(10);
+        order.addOrderItem(item2);
 
         // when
         Order savedOrder = orderRepository.saveAndFlush(order);
