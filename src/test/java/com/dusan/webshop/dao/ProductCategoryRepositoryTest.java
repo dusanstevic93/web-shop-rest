@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
 class ProductCategoryRepositoryTest {
 
     @Autowired
@@ -25,62 +25,51 @@ class ProductCategoryRepositoryTest {
         productCategory.setName("Category A");
 
         // when
-        ProductCategory savedCategory = repository.save(productCategory);
+        ProductCategory savedCategory = repository.saveAndFlush(productCategory);
 
         // then
-        assertAll(
-                () -> assertNotNull(savedCategory.getId()),
-                () -> assertEquals(productCategory.getName(), savedCategory.getName()),
-                () -> assertNull(productCategory.getParent())
-        );
+        assertNotNull(savedCategory.getId());
     }
 
     @Test
-    void testSaveCategoryWithParent() {
+    @Sql("classpath:scripts/insert-category.sql")
+    void testAddSubcategoryToExistingCategory() {
         // given
-        ProductCategory category1 = new ProductCategory();
-        category1.setName("Category 1");
+        ProductCategory parent = repository.findById(1L).get();
 
-        ProductCategory category2 = new ProductCategory();
-        category2.setName("Category 2");
-        category2.setParent(category1);
+        ProductCategory subcategory1 = new ProductCategory();
+        subcategory1.setName("Subcategory 1");
+
+        ProductCategory subcategory2 = new ProductCategory();
+        subcategory2.setName("Subcategory 2");
+
+        ProductCategory subcategory3 = new ProductCategory();
+        subcategory3.setName("Subcategory 3");
+
+        subcategory2.addSubCategory(subcategory3);
+
+        parent.addSubCategory(subcategory1);
+        parent.addSubCategory(subcategory2);
 
         // when
-        ProductCategory savedCategory1 = repository.save(category1);
-        ProductCategory savedCategory2 = repository.save(category2);
+        ProductCategory savedParentCategory = repository.saveAndFlush(parent);
 
         // then
-        assertAll(
-                () -> assertNotNull(savedCategory2.getParent()),
-                () -> assertEquals(savedCategory1.getId(), savedCategory2.getParent().getId())
-        );
+        assertEquals(parent.getSubCategories().size(), savedParentCategory.getSubCategories().size());
     }
 
     @Test
-    void testSaveCategoryWithSubcategories() {
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Sql(value = "classpath:scripts/insert-category-and-subcategories.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:scripts/delete-from-category.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void testFindByIdFetchSubcategories() {
         // given
-        ProductCategory parent = new ProductCategory();
-        parent.setName("parent");
-
-        ProductCategory child1 = new ProductCategory();
-        child1.setName("Child1");
-
-        ProductCategory child2 = new ProductCategory();
-        child2.setName("child2");
-
-        ProductCategory child3 = new ProductCategory();
-        child3.setName("child3");
-
-        child2.addSubCategory(child3);
-
-        parent.addSubCategory(child1);
-        parent.addSubCategory(child2);
+        int expectedNumberOfSubcategories = 2;
 
         // when
-        ProductCategory savedParent = repository.save(parent);
+        ProductCategory parentCategory = repository.findByIdFetchSubCategories(1L).get();
 
         // then
-        ProductCategory retrievedParent = repository.findByIdFetchSubCategories(savedParent.getId()).get();
-        assertEquals(parent.getSubCategories().size(), retrievedParent.getSubCategories().size());
+        assertEquals(expectedNumberOfSubcategories, parentCategory.getSubCategories().size());
     }
 }

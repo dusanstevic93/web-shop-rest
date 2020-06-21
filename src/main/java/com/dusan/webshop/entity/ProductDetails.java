@@ -19,6 +19,6 @@ public class ProductDetails {
     private String description;
 
     @MapsId
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Product product;
 }

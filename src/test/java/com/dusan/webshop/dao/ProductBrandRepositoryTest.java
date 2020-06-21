@@ -5,14 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
 class ProductBrandRepositoryTest {
 
     @Autowired
@@ -26,7 +24,7 @@ class ProductBrandRepositoryTest {
         brand.setName("Brand A");
 
         // when
-        ProductBrand savedBrand = repository.save(brand);
+        ProductBrand savedBrand = repository.saveAndFlush(brand);
 
         // then
         assertNotNull(savedBrand.getId());

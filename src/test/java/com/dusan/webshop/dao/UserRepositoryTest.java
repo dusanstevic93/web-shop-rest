@@ -7,14 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
 class UserRepositoryTest {
 
     @Autowired
@@ -24,7 +22,9 @@ class UserRepositoryTest {
     private UserRoleRepository roleRepository;
 
     @Test
+    @Sql("classpath:scripts/insert-roles.sql")
     void testSaveCustomer() {
+        // given
         Customer customer = new Customer();
         customer.setUsername("asdf");
         customer.setPassword("password");
@@ -39,13 +39,13 @@ class UserRepositoryTest {
         address.setCity("Belgrade");
         customer.setAddress(address);
 
-        UserRole role = new UserRole();
-        role.setName("CUSTOMER");
-
-        role = roleRepository.save(role);
+        UserRole role = roleRepository.getOne(2L);
         customer.setUserRole(role);
 
-        userRepository.save(customer);
+        // when
+        Customer savedCustomer = userRepository.saveAndFlush(customer);
 
+        // then
+        assertNotNull(savedCustomer.getId());
     }
 }

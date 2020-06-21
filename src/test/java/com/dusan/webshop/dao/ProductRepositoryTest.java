@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.math.BigDecimal;
 
@@ -16,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
 class ProductRepositoryTest {
 
     @Autowired
@@ -30,13 +28,11 @@ class ProductRepositoryTest {
 
 
     @Test
+    @Sql({"classpath:scripts/insert-category.sql", "classpath:scripts/insert-brand.sql"})
     void testSaveProduct() {
-
-        ProductCategory category = new ProductCategory();
-        category.setName("Phones");
-
-        ProductBrand brand = new ProductBrand();
-        brand.setName("Samsung");
+        // given
+        ProductCategory category = categoryRepository.getOne(1L);
+        ProductBrand brand = brandRepository.getOne(1L);
 
         Product product = new Product();
         product.setName("A10");
@@ -50,9 +46,10 @@ class ProductRepositoryTest {
         product.setProductBrand(brand);
         product.setProductCategory(category);
 
-        categoryRepository.save(category);
-        brandRepository.save(brand);
-        productRepository.save(product);
+        // when
+        Product savedProduct = productRepository.saveAndFlush(product);
 
+        // then
+        assertNotNull(savedProduct.getId());
     }
 }
