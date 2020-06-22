@@ -1,0 +1,1 @@
+INSERT INTO product_brand VALUES(1, 'Test brand');
