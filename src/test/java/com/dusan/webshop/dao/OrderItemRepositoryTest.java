@@ -24,7 +24,7 @@ class OrderItemRepositoryTest {
     private OrderItemRepository orderItemRepository;
 
     @Test
-    @Sql({"classpath:scripts/create-order-test-data.sql", "classpath:scripts/insert-order.sql"})
+    @Sql({"classpath:scripts/create-order-setup.sql", "classpath:scripts/insert-order.sql"})
     void testFindAllByOrder() {
         // given
         int expectedNumberOfItems = 2;

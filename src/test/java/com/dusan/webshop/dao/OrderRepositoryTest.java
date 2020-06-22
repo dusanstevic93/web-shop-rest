@@ -30,7 +30,7 @@ class OrderRepositoryTest {
     private ProductRepository productRepository;
 
     @Test
-    @Sql("classpath:scripts/create-order-test-data.sql")
+    @Sql("classpath:scripts/create-order-setup.sql")
     void testSaveOrder() {
         // given
         Order order = new Order();

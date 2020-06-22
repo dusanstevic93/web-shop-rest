@@ -1,6 +1,7 @@
 package com.dusan.webshop.dao;
 
 import com.dusan.webshop.entity.ProductCategory;
+import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -59,9 +60,7 @@ class ProductCategoryRepositoryTest {
     }
 
     @Test
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    @Sql(value = "classpath:scripts/insert-category-and-subcategories.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = "classpath:scripts/delete-from-category.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(value = "classpath:scripts/insert-category-and-subcategories.sql")
     void testFindByIdFetchSubcategories() {
         // given
         int expectedNumberOfSubcategories = 2;
@@ -70,6 +69,9 @@ class ProductCategoryRepositoryTest {
         ProductCategory parentCategory = repository.findByIdFetchSubCategories(1L).get();
 
         // then
-        assertEquals(expectedNumberOfSubcategories, parentCategory.getSubCategories().size());
+        assertAll(
+                () -> assertTrue(Hibernate.isInitialized(parentCategory.getSubCategories())),
+                () -> assertEquals(expectedNumberOfSubcategories, parentCategory.getSubCategories().size())
+        );
     }
 }
