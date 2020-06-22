@@ -24,7 +24,7 @@ class OrderRepositoryTest {
     private OrderRepository orderRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -50,7 +50,7 @@ class OrderRepositoryTest {
         billingAddress.setCity("Billing city");
         order.setBillingAddress(billingAddress);
 
-        Customer customer = (Customer) userRepository.findById(1L).get();
+        Customer customer = customerRepository.getOne(1L);
         order.setCustomer(customer);
 
         OrderItem item1 = new OrderItem();
