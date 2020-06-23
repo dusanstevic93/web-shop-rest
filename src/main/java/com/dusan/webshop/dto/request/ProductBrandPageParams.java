@@ -1,0 +1,18 @@
+package com.dusan.webshop.dto.request;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.domain.Sort.Direction;
+
+
+@Getter
+@Setter
+public class ProductBrandPageParams extends PageParams {
+
+    private ProductBrandSort sort;
+    private Direction direction;
+
+    public enum ProductBrandSort {
+        NAME
+    }
+}
