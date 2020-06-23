@@ -33,8 +33,9 @@ class ProductDetailsRepositoryTest {
 
 
     @Test
-    @Sql({"classpath:scripts/insert-category.sql", "classpath:scripts/insert-brand.sql"})
+    @Sql("classpath:scripts/create-product-setup.sql")
     void testSaveProductDetails() {
+        // given
         ProductCategory category = categoryRepository.getOne(1L);
         ProductBrand brand = brandRepository.getOne(1L);
 
@@ -44,8 +45,6 @@ class ProductDetailsRepositoryTest {
         product.setQuantity(15);
         product.setWeight(new BigDecimal(0.2));
         product.setShortDescription("Mobile phone");
-        product.getImages().add("image1.jpg");
-        product.getImages().add("image2.jpg");
         product.setProductBrand(brand);
         product.setProductCategory(category);
 
@@ -53,6 +52,18 @@ class ProductDetailsRepositoryTest {
         productDetails.setDescription("Some long product description");
         productDetails.setProduct(product);
 
+        // when
+        ProductDetails savedProductDetails = productDetailsRepository.saveAndFlush(productDetails);
+
+        // then
+        assertNotNull(savedProductDetails.getId());
+    }
+
+    @Test
+    @Sql("classpath:scripts/add-product-image-setup.sql")
+    void testAddImageToExistingProduct() {
+        ProductDetails productDetails = productDetailsRepository.findById(1L).get();
+        productDetails.getImages().add("test-image.jpg");
         productDetailsRepository.saveAndFlush(productDetails);
     }
 }

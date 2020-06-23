@@ -32,14 +32,9 @@ public class Product {
 
     private String mainImage;
 
-    @ElementCollection
-    @CollectionTable(name = "product_image", joinColumns = @JoinColumn(name = "product_id"))
-    @Column(name = "image")
-    private Set<String> images = new HashSet<>();
-
     @ManyToOne
     private ProductBrand productBrand;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ProductCategory productCategory;
 }
