@@ -42,12 +42,14 @@ class ProductImageServiceImplTest {
         long productId = 1L;
         String link = imageService.getImageLink(productId, "testimage.jpg");
         assertNotNull(link);
+        System.out.println(link);
     }
 
     @Test
     void testGetLinksToAllProductImages() throws IOException {
         long productId = 1L;
         List<String> links = imageService.getLinksToAllProductImages(productId);
+        assertEquals(1, links.size());
         System.out.println(links);
     }
 }

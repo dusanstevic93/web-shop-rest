@@ -2,6 +2,7 @@ package com.dusan.webshop.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.api.ApiResponse;
+import com.cloudinary.utils.ObjectUtils;
 import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.service.ProductImageService;
 import com.dusan.webshop.service.exception.ImageHandlingException;
@@ -9,7 +10,6 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,17 +41,18 @@ public class ProductImageServiceImpl implements ProductImageService {
         String publicId = "products/" + productId + "/" + FilenameUtils.removeExtension(imageName);
 
         try {
-            cloudinary.uploader().destroy(publicId, new HashMap());
+            cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
         } catch (IOException e) {
             throw new ImageHandlingException("Image delete error", e);
         }
     }
 
+    @Override
     public String getImageLink(long productId, String imageName) {
         String publicId = "products/" + productId + "/" + FilenameUtils.removeExtension(imageName);
         ApiResponse response;
         try {
-            response = cloudinary.api().resource(publicId, new HashMap());
+            response = cloudinary.api().resource(publicId, ObjectUtils.emptyMap());
         } catch (Exception e) {
             throw new ImageHandlingException("Image retrieving error", e);
         }
@@ -59,12 +60,13 @@ public class ProductImageServiceImpl implements ProductImageService {
         return (String) response.get("url");
     }
 
+    @Override
     public List<String> getLinksToAllProductImages(long productId) {
         String prefix = "products/" + productId + "/";
         Map<String, Object> params = new HashMap<>();
         params.put("prefix", prefix);
         params.put("type", "upload");
-        ApiResponse response = null;
+        ApiResponse response;
         try {
             response = cloudinary.api().resources(params);
         } catch (Exception e) {
