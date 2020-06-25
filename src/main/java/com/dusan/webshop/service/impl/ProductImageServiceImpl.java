@@ -1,33 +1,81 @@
 package com.dusan.webshop.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.api.ApiResponse;
 import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.service.ProductImageService;
+import com.dusan.webshop.service.exception.ImageHandlingException;
 import lombok.AllArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @Service
 public class ProductImageServiceImpl implements ProductImageService {
 
-    private String folder = "/images";
+    private Cloudinary cloudinary;
 
     @Override
     public void saveImage(long productId, UploadedImage image) {
-        Path path = Paths.get(folder, String.valueOf(productId));
+        // image name should be without file extension
+        String publicId = "products/" + productId + "/" + FilenameUtils.removeExtension(image.getName());
+        Map<String, Object> params = new HashMap<>();
+        params.put("public_id", publicId);
+
         try {
-
-            if (Files.notExists(path))
-                Files.createDirectories(path);
-
-            Files.write(path, image.getBytes());
-
+            cloudinary.uploader().upload(image.getBytes(), params);
         } catch (IOException e) {
-            throw new RuntimeException();
+            throw new ImageHandlingException("Image upload error", e);
         }
+    }
+
+    @Override
+    public void deleteImage(long productId, String imageName) {
+        String publicId = "products/" + productId + "/" + FilenameUtils.removeExtension(imageName);
+
+        try {
+            cloudinary.uploader().destroy(publicId, new HashMap());
+        } catch (IOException e) {
+            throw new ImageHandlingException("Image delete error", e);
+        }
+    }
+
+    public String getImageLink(long productId, String imageName) {
+        String publicId = "products/" + productId + "/" + FilenameUtils.removeExtension(imageName);
+        ApiResponse response;
+        try {
+            response = cloudinary.api().resource(publicId, new HashMap());
+        } catch (Exception e) {
+            throw new ImageHandlingException("Image retrieving error", e);
+        }
+
+        return (String) response.get("url");
+    }
+
+    public List<String> getLinksToAllProductImages(long productId) {
+        String prefix = "products/" + productId + "/";
+        Map<String, Object> params = new HashMap<>();
+        params.put("prefix", prefix);
+        params.put("type", "upload");
+        ApiResponse response = null;
+        try {
+            response = cloudinary.api().resources(params);
+        } catch (Exception e) {
+            throw new ImageHandlingException("Image retrieving error", e);
+        }
+
+        List<String> links = new ArrayList<>();
+        List<Map<String, Object>> mapList = ((List<Map<String, Object>>) response.get("resources"));
+        for (Map<String, Object> map : mapList){
+            links.add((String)map.get("url"));
+        }
+        return links;
     }
 }
