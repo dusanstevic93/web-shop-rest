@@ -5,18 +5,27 @@ import com.dusan.webshop.dao.ProductCategoryRepository;
 import com.dusan.webshop.dao.ProductDetailsRepository;
 import com.dusan.webshop.dao.ProductRepository;
 import com.dusan.webshop.dto.request.CreateProductRequest;
+import com.dusan.webshop.dto.request.ProductFilterParams;
 import com.dusan.webshop.dto.request.ProductPageParams;
+import com.dusan.webshop.dto.request.ProductPageParams.ProductSort;
 import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.dto.response.ProductDetailsResponse;
+import com.dusan.webshop.dto.response.ProductResponse;
 import com.dusan.webshop.entity.Product;
 import com.dusan.webshop.entity.ProductBrand;
 import com.dusan.webshop.entity.ProductCategory;
 import com.dusan.webshop.entity.ProductDetails;
+import com.dusan.webshop.entity.specification.ProductSpecification;
 import com.dusan.webshop.service.ProductImageService;
 import com.dusan.webshop.service.ProductService;
 import com.dusan.webshop.service.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,12 +102,49 @@ public class ProductServiceImpl implements ProductService {
         response.setWeight(product.getWeight());
         response.setShortDescription(product.getShortDescription());
         response.setQuantity(product.getQuantity());
-        //response.setRating();
+        response.setRating(product.getAverageRating());
         response.setDescription(details.getDescription());
         String mainImageLink = imageService.getImageLink(productId, product.getMainImage());
         List<String> links = imageService.getLinksToAllProductImages(productId);
         response.setMainImageLink(mainImageLink);
         response.setLinksToAllImages(links);
+        return response;
+    }
+
+    @Override
+    public Page<ProductResponse> getProducts(ProductFilterParams filterParams, ProductPageParams pageParams) {
+        Specification<Product> specification = new ProductSpecification(filterParams);
+        Pageable pageable = getPageable(pageParams);
+        Page<Product> page = productRepository.findAll(specification, pageable);
+
+
+        return null;
+    }
+
+    private Pageable getPageable(ProductPageParams pageParams) {
+        Sort sort = getSort(pageParams.getSort(), pageParams.getDirection());
+        return PageRequest.of(pageParams.getPage(), pageParams.getSize(), sort);
+    }
+
+    private Sort getSort(ProductSort productSort, Direction direction) {
+        switch (productSort) {
+            case NAME: return Sort.by(direction, "name");
+            case PRICE: return Sort.by(direction, "price");
+            case RATING: return Sort.by(direction, "averageRating");
+            default: return Sort.unsorted();
+        }
+    }
+
+    private ProductResponse convertProductToProductResponse(Product product) {
+        ProductResponse response = new ProductResponse();
+        response.setId(product.getId());
+        response.setBrandName(product.getProductBrand().getName());
+        response.setName(product.getName());
+        response.setPrice(product.getPrice());
+        response.setQuantity(product.getQuantity());
+        response.setRating(product.getAverageRating());
+        response.setShortDescription(product.getShortDescription());
+        response.setWeight(product.getWeight());
         return response;
     }
 
