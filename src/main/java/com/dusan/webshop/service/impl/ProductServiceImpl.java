@@ -104,9 +104,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void addImage(long productId, UploadedImage image) {
-        ProductDetails productDetails = detailsRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product with id = " + productId + " does not exist."));
-        productDetails.getImages().add(image.getName());
         imageService.saveImage(productId, image);
     }
 

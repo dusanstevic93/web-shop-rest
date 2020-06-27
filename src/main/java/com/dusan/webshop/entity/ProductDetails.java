@@ -23,9 +23,4 @@ public class ProductDetails {
     @MapsId
     @OneToOne(cascade = CascadeType.PERSIST)
     private Product product;
-
-    @ElementCollection
-    @CollectionTable(name = "product_image", joinColumns = @JoinColumn(name = "product_id"))
-    @Column(name = "image")
-    private Set<String> images = new HashSet<>();
 }

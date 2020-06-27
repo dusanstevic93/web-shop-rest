@@ -58,12 +58,4 @@ class ProductDetailsRepositoryTest {
         // then
         assertNotNull(savedProductDetails.getId());
     }
-
-    @Test
-    @Sql("classpath:scripts/add-product-image-setup.sql")
-    void testAddImageToExistingProduct() {
-        ProductDetails productDetails = productDetailsRepository.findById(1L).get();
-        productDetails.getImages().add("test-image.jpg");
-        productDetailsRepository.saveAndFlush(productDetails);
-    }
 }
