@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 public class ProductBrandPageParams extends PageParams {
 
     private ProductBrandSort sort;
-    private Direction direction;
+    private Direction direction = Direction.ASC;
 
     public enum ProductBrandSort {
         NAME

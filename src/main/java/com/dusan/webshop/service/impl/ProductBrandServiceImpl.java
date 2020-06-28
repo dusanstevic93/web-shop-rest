@@ -39,8 +39,7 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     public Page<ProductBrandResponse> findAllProductBrands(ProductBrandPageParams pageParams) {
         Pageable pageable = getPageable(pageParams);
         Page<ProductBrand> page = productBrandRepository.findAll(pageable);
-        Page<ProductBrandResponse> responsePage = page.map(entity -> convertEntityToResponse(entity));
-        return responsePage;
+        return page.map(this::convertEntityToResponse);
     }
 
     private Pageable getPageable(ProductBrandPageParams pageParams) {
@@ -50,7 +49,7 @@ public class ProductBrandServiceImpl implements ProductBrandService {
         } else {
             sort = Sort.unsorted();
         }
-        return PageRequest.of(pageParams.getPage(), pageParams.getSize());
+        return PageRequest.of(pageParams.getPage(), pageParams.getSize(), sort);
     }
 
     private ProductBrandResponse convertEntityToResponse(ProductBrand entity) {
