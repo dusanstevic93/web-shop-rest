@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -72,5 +73,10 @@ public class ProductBrandController {
                 page.getTotalPages()
         );
         return new PageResponseWrapper<>(page.getContent(), metadata);
+    }
+
+    @PutMapping(value = "/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void setProductBrandLogo(@RequestParam("image") MultipartFile image) {
+        System.out.println(image.getOriginalFilename());
     }
 }
