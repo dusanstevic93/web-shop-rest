@@ -29,10 +29,21 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     }
 
     @Override
+    public void updateProductBrand(long brandId, CreateProductBrandRequest request) {
+        ProductBrand brand = getProductBrand(brandId);
+        brand.setName(request.getBrandName());
+        productBrandRepository.save(brand);
+    }
+
+    @Override
     public ProductBrandResponse findProductBrandById(long brandId) {
-        ProductBrand brand = productBrandRepository.findById(brandId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product brand with id = " + brandId + " is not found"));
+        ProductBrand brand = getProductBrand(brandId);
         return convertEntityToResponse(brand);
+    }
+
+    private ProductBrand getProductBrand(long brandId) {
+        return productBrandRepository.findById(brandId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product brand with id = " + brandId + " is not found"));
     }
 
     @Override

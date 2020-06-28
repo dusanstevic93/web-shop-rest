@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 public interface ProductBrandService {
 
     void createProductBrand(CreateProductBrandRequest request);
+    void updateProductBrand(long brandId, CreateProductBrandRequest request);
     ProductBrandResponse findProductBrandById(long brandId);
     Page<ProductBrandResponse> findAllProductBrands(ProductBrandPageParams pageParams);
 }

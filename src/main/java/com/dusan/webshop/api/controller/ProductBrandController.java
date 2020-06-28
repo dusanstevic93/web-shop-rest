@@ -50,6 +50,16 @@ public class ProductBrandController {
         return brandService.findProductBrandById(brandId);
     }
 
+    @Operation(summary = "Update product brand", description = Descriptions.UPDATE_PRODUCT_BRAND,
+                responses = {
+                             @ApiResponse(responseCode = "200", description = "successful operation"),
+                             @ApiResponse(responseCode = "404", description = "Product brand is not found")
+                })
+    @PutMapping(value = "/{brandId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateProductBrand(@PathVariable long brandId, @Valid @RequestBody CreateProductBrandRequest request) {
+        brandService.updateProductBrand(brandId, request);
+    }
+
     @Operation(summary = "Get all brands", description = Descriptions.GET_ALL_BRANDS,
                 responses = @ApiResponse(responseCode = "200", description = "successful operation"))
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
