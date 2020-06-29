@@ -21,6 +21,8 @@ public class ProductCategory {
 
     private String name;
 
+    private Image image;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductCategory parent;
 

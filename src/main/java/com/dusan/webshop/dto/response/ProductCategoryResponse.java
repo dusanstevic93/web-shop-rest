@@ -12,5 +12,6 @@ public class ProductCategoryResponse {
 
     private Long id;
     private String name;
+    private String imageUrl;
     private List<ProductCategoryResponse> subcategories = new ArrayList<>();
 }
