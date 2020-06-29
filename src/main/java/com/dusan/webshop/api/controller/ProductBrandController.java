@@ -1,5 +1,7 @@
 package com.dusan.webshop.api.controller;
 
+import com.dusan.webshop.api.controller.exception.EmptyFileException;
+import com.dusan.webshop.api.controller.exception.FileFormatNotSupportedException;
 import com.dusan.webshop.api.docs.Descriptions;
 import com.dusan.webshop.dto.request.CreateProductBrandRequest;
 import com.dusan.webshop.dto.request.ProductBrandPageParams;
@@ -76,8 +78,19 @@ public class ProductBrandController {
         return new PageResponseWrapper<>(page.getContent(), metadata);
     }
 
+    @Operation(summary = "Upload brand logo", description = Descriptions.UPLOAD_PRODUCT_BRAND_LOGO,
+                responses = {@ApiResponse(responseCode = "200", description = "Successful operation"),
+                             @ApiResponse(responseCode = "400", description = "Empty file"),
+                             @ApiResponse(responseCode = "404", description = "Product brand is not found"),
+                             @ApiResponse(responseCode = "422", description = "File format is not valid")})
     @PutMapping(value = "/{brandId}/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void setProductBrandLogo(@PathVariable long brandId, @RequestParam("image") MultipartFile image) throws Exception {
+    public void uploadProductBrandLogo(@PathVariable long brandId, @RequestBody MultipartFile image) throws Exception {
+        if (image == null)
+            throw new EmptyFileException("File must not be empty");
+
+        if (!image.getContentType().equals("image/jpeg"))
+            throw new FileFormatNotSupportedException(image.getContentType() + " is not supported");
+
         UploadedImage uploadedImage = new UploadedImage();
         uploadedImage.setName(image.getOriginalFilename());
         uploadedImage.setBytes(image.getBytes());
