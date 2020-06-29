@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Getter
@@ -29,7 +30,9 @@ public class Product {
 
     private BigDecimal weight;
 
-    private String mainImage;
+    @AttributeOverride(name = "imageId", column = @Column(name = "mainImageId"))
+    @AttributeOverride(name = "imageUrl", column = @Column(name = "mainImageUrl"))
+    private Image mainImage;
 
     @Setter(AccessLevel.NONE)
     private BigDecimal averageRating;

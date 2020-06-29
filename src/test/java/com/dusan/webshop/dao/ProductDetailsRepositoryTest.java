@@ -1,9 +1,6 @@
 package com.dusan.webshop.dao;
 
-import com.dusan.webshop.entity.Product;
-import com.dusan.webshop.entity.ProductBrand;
-import com.dusan.webshop.entity.ProductCategory;
-import com.dusan.webshop.entity.ProductDetails;
+import com.dusan.webshop.entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -57,5 +54,24 @@ class ProductDetailsRepositoryTest {
 
         // then
         assertNotNull(savedProductDetails.getId());
+    }
+
+    @Test
+    @Sql("classpath:scripts/insert-product-with-details.sql")
+    void testAddProductImage() {
+        // given
+        ProductDetails productDetails = productDetailsRepository.findById(1L).get();
+
+        Image image1 = new Image("id1", "url1");
+        Image image2 = new Image("id2", "url2");
+
+        productDetails.getImages().add(image1);
+        productDetails.getImages().add(image2);
+
+        // when
+        ProductDetails savedDetails = productDetailsRepository.saveAndFlush(productDetails);
+
+        // then
+        assertEquals(2, savedDetails.getImages().size());
     }
 }
