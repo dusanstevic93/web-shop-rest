@@ -3,6 +3,7 @@ package com.dusan.webshop.api.controller;
 import com.dusan.webshop.api.docs.Descriptions;
 import com.dusan.webshop.dto.request.CreateProductBrandRequest;
 import com.dusan.webshop.dto.request.ProductBrandPageParams;
+import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.dto.response.PageResponseWrapper;
 import com.dusan.webshop.dto.response.PageResponseWrapper.PageMetadata;
 import com.dusan.webshop.dto.response.ProductBrandResponse;
@@ -75,8 +76,11 @@ public class ProductBrandController {
         return new PageResponseWrapper<>(page.getContent(), metadata);
     }
 
-    @PutMapping(value = "/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void setProductBrandLogo(@RequestParam("image") MultipartFile image) {
-        System.out.println(image.getOriginalFilename());
+    @PutMapping(value = "/{brandId}/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void setProductBrandLogo(@PathVariable long brandId, @RequestParam("image") MultipartFile image) throws Exception {
+        UploadedImage uploadedImage = new UploadedImage();
+        uploadedImage.setName(image.getOriginalFilename());
+        uploadedImage.setBytes(image.getBytes());
+        brandService.addBrandLogo(brandId, uploadedImage);
     }
 }

@@ -18,4 +18,8 @@ public class ProductBrand {
     private Long id;
 
     private String name;
+
+    @AttributeOverride(name = "imageId", column = @Column(name = "logo_id"))
+    @AttributeOverride(name = "imageUrl", column = @Column(name = "logo_url"))
+    private Image image;
 }

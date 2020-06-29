@@ -9,4 +9,5 @@ public class ProductBrandResponse {
 
     private Long id;
     private String name;
+    private String logoUrl;
 }

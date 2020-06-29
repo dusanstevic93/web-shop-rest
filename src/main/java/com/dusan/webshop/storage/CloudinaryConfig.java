@@ -1,4 +1,4 @@
-package com.dusan.webshop;
+package com.dusan.webshop.storage;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Value;
