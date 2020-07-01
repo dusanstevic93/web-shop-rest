@@ -11,6 +11,7 @@ import com.dusan.webshop.service.exception.ResourceNotFoundException;
 import com.dusan.webshop.storage.ImageStorage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<ProductCategoryResponse> getCategoryTree() {
         List<ProductCategory> categories = categoryRepository.findAllCategoriesFetchSubcategories();
         return categories.stream()
@@ -34,6 +36,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
+    @Transactional
     public void createProductCategory(CreateProductCategoryRequest request) {
         ProductCategory category = new ProductCategory();
         category.setName(request.getName());
@@ -41,6 +44,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
+    @Transactional
     public void createProductSubcategory(long parentCategoryId, CreateProductCategoryRequest request) {
         ProductCategory parentCategory = findProductCategory(parentCategoryId);
         ProductCategory subcategory = new ProductCategory();
@@ -50,21 +54,21 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteProductCategory(long categoryId) {
         ProductCategory category = findProductCategory(categoryId);
         categoryRepository.delete(category);
     }
 
     @Override
+    @Transactional
     public void addCategoryImage(long categoryId, UploadedImage uploadedImage) {
         ProductCategory category = findProductCategory(categoryId);
         if (category.getImage() != null)
             imageStorage.deleteImage(category.getImage().getImageId());
-        final String folder = "categories/" + categoryId;
-        Map<String, String> response = imageStorage.saveImage(folder, uploadedImage);
+        Map<String, String> response = imageStorage.saveImage(uploadedImage);
         Image image = new Image(response.get("public_id"), response.get("url"));
         category.setImage(image);
-        categoryRepository.save(category);
     }
 
     private ProductCategory findProductCategory(long categoryId) {
@@ -72,7 +76,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category with id = " + categoryId + " does not exits"));
     }
 
-    public ProductCategoryResponse convertEntityToResponse(ProductCategory entity) {
+    private ProductCategoryResponse convertEntityToResponse(ProductCategory entity) {
         ProductCategoryResponse response = new ProductCategoryResponse();
         response.setId(entity.getId());
         response.setName(entity.getName());
