@@ -6,6 +6,6 @@ import java.util.Map;
 
 public interface ImageStorage {
 
-    Map<String, String> saveImage(String folder, UploadedImage image);
+    Map<String, String> saveImage(UploadedImage image);
     void deleteImage(String publicId);
 }

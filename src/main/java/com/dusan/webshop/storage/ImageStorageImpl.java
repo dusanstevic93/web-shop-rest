@@ -18,9 +18,8 @@ public class ImageStorageImpl implements ImageStorage {
     private Cloudinary cloudinary;
 
     @Override
-    public Map<String, String> saveImage(String folder, UploadedImage image) {
+    public Map<String, String> saveImage(UploadedImage image) {
         Map<String, Object> params = new HashMap<>();
-        params.put("folder", folder);
         Map<String, String> response;
         try {
             response = cloudinary.uploader().upload(image.getBytes(), params);
