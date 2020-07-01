@@ -53,6 +53,15 @@ public class ProductCategoryController {
         categoryService.createProductSubcategory(parentCategoryId, request);
     }
 
+    @Operation(summary = "Update product category", description = Descriptions.UPDATE_PRODUCT_CATEGORY,
+                responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
+                             @ApiResponse(responseCode = "403", description = "unauthorized"),
+                             @ApiResponse(responseCode = "404", description = "category not found")})
+    @PutMapping(value = "/{categoryId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateCategory(@PathVariable long categoryId, @Valid @RequestBody CreateProductCategoryRequest request) {
+        categoryService.updateProductCategory(categoryId, request);
+    }
+
     @Operation(summary = "Upload category image", description = Descriptions.UPLOAD_CATEGORY_IMAGE,
             responses = {@ApiResponse(responseCode = "200", description = "Successful operation"),
                     @ApiResponse(responseCode = "400", description = "Empty file"),

@@ -10,6 +10,7 @@ public interface ProductCategoryService {
 
     void createProductCategory(CreateProductCategoryRequest reqeust);
     void createProductSubcategory(long parentCategoryId, CreateProductCategoryRequest request);
+    void updateProductCategory(long categoryId, CreateProductCategoryRequest request);
     void deleteProductCategory(long categoryId);
     void addCategoryImage(long categoryId, UploadedImage image);
     List<ProductCategoryResponse> getCategoryTree();

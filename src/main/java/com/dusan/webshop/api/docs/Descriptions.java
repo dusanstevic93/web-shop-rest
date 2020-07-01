@@ -18,6 +18,7 @@ public class Descriptions {
     // product category controller
     public static final String CREATE_PRODUCT_CATEGORY = "Create new product category. User needs to have ADMIN role to perform this operation";
     public static final String CREATE_PRODUCT_SUBCATEGORY = "Create subcategory of parent category specified by id. User needs to have ADMIN role to perform this operation";
+    public static final String UPDATE_PRODUCT_CATEGORY = "Update product category specified by id User needs to have ADMIN role to perform this operation";
     public static final String GET_CATEGORY_TREE = "Returns all product categories organized in tree structure";
     public static final String UPLOAD_CATEGORY_IMAGE = "Upload product category image. " +
             "If product category already have a associated image, an old image will be replaced with a new image. " +

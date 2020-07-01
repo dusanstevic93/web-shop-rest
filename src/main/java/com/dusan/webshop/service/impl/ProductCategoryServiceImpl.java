@@ -50,7 +50,13 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         ProductCategory subcategory = new ProductCategory();
         subcategory.setName(request.getName());
         parentCategory.addSubCategory(subcategory);
-        categoryRepository.save(parentCategory);
+    }
+
+    @Override
+    @Transactional
+    public void updateProductCategory(long categoryId, CreateProductCategoryRequest request) {
+        ProductCategory category = findProductCategory(categoryId);
+        category.setName(request.getName());
     }
 
     @Override
