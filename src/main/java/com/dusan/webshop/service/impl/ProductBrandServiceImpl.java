@@ -28,6 +28,7 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     private ImageStorage imageStorage;
 
     @Override
+    @Transactional
     public void createProductBrand(CreateProductBrandRequest request) {
         ProductBrand brand = new ProductBrand();
         brand.setName(request.getBrandName());
@@ -35,24 +36,21 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     }
 
     @Override
+    @Transactional
     public void updateProductBrand(long brandId, CreateProductBrandRequest request) {
-        ProductBrand brand = getProductBrand(brandId);
+        ProductBrand brand = getProductBrandFromDatabase(brandId);
         brand.setName(request.getBrandName());
-        productBrandRepository.save(brand);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductBrandResponse findProductBrandById(long brandId) {
-        ProductBrand brand = getProductBrand(brandId);
+        ProductBrand brand = getProductBrandFromDatabase(brandId);
         return convertEntityToResponse(brand);
     }
 
-    private ProductBrand getProductBrand(long brandId) {
-        return productBrandRepository.findById(brandId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product brand with id = " + brandId + " is not found"));
-    }
-
     @Override
+    @Transactional(readOnly = true)
     public Page<ProductBrandResponse> findAllProductBrands(ProductBrandPageParams pageParams) {
         Pageable pageable = getPageable(pageParams);
         Page<ProductBrand> page = productBrandRepository.findAll(pageable);
@@ -81,14 +79,17 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     @Override
     @Transactional
     public void addBrandLogo(long brandId, UploadedImage logo) {
-        ProductBrand brand = getProductBrand(brandId);
+        ProductBrand brand = getProductBrandFromDatabase(brandId);
         // delete old logo if exists
         if (brand.getImage() != null)
             imageStorage.deleteImage(brand.getImage().getImageId());
-        String folder = "brands/" + brandId;
-        Map<String, String> response = imageStorage.saveImage(folder, logo);
+        Map<String, String> response = imageStorage.saveImage(logo);
         Image image = new Image(response.get("public_id"), response.get("url"));
         brand.setImage(image);
-        productBrandRepository.save(brand);
+    }
+
+    private ProductBrand getProductBrandFromDatabase(long brandId) {
+        return productBrandRepository.findById(brandId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product brand with id = " + brandId + " is not found"));
     }
 }
