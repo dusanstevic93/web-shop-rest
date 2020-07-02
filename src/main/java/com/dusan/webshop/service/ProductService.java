@@ -12,9 +12,11 @@ import java.util.List;
 
 public interface ProductService {
 
-    void createProduct(CreateProductRequest request, UploadedImage mainImage);
-    void updateProduct(long productId, CreateProductRequest request, UploadedImage newMainImage);
+    void createProduct(CreateProductRequest request);
+    void updateProduct(long productId, CreateProductRequest request);
+    ProductDetailsResponse findProductDetailsById(long productId);
+    Page<ProductResponse> findAllProducts(ProductFilterParams filterParams, ProductPageParams pageParams);
+    void addMainImage(long productId, UploadedImage image);
     void addImage(long productId, UploadedImage image);
-    ProductDetailsResponse getProductDetails(long productId);
-    Page<ProductResponse> getProducts(ProductFilterParams filterParams, ProductPageParams pageParams);
+    void deleteImage(long productId, String imageId);
 }

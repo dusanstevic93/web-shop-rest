@@ -10,7 +10,6 @@ import java.util.List;
 @Setter
 public class ProductDetailsResponse extends ProductResponse {
 
-    private String description;
-    private String mainImageLink;
-    private List<String> linksToAllImages;
+    private String longDescription;
+    private List<ImageResponse> images;
 }

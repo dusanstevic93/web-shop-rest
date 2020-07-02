@@ -10,11 +10,13 @@ import java.math.BigDecimal;
 public class ProductResponse {
 
     private Long id;
-    private String brandName;
+    private Long categoryId;
+    private Long brandId;
     private String name;
     private BigDecimal price;
     private int quantity;
     private String shortDescription;
     private BigDecimal weight;
-    private BigDecimal rating;
+    private BigDecimal averageRating;
+    private ImageResponse mainImage;
 }

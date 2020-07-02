@@ -37,7 +37,7 @@ public class Product {
     @Setter(AccessLevel.NONE)
     private BigDecimal averageRating;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ProductBrand productBrand;
 
     @ManyToOne(fetch = FetchType.LAZY)

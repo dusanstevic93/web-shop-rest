@@ -8,10 +8,10 @@ import org.springframework.data.domain.Sort.Direction;
 @Setter
 public class ProductPageParams extends PageParams {
 
-    private ProductSort sort;
-    private Direction direction;
+    private ProductSort sort = ProductSort.UNSORTED;
+    private Direction direction = Direction.ASC;
 
     public enum ProductSort {
-        NAME, PRICE, RATING
+        NAME, PRICE, RATING, UNSORTED
     }
 }
