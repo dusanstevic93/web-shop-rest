@@ -27,6 +27,8 @@ public class Order {
 
     private BigDecimal value;
 
+    private BigDecimal totalWeight;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
