@@ -46,4 +46,10 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductCategory productCategory;
+
+    public void decreaseQuantity(int amount) {
+        if (amount > quantity)
+            throw new IllegalArgumentException("amount must be less than or equal total quantity");
+        quantity -= amount;
+    }
 }
