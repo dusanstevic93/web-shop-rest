@@ -15,6 +15,10 @@ import java.util.List;
 public class Product {
 
     @Setter(AccessLevel.NONE)
+    @Version
+    private Long version;
+
+    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_id_sequence")
     @SequenceGenerator(name = "product_id_sequence", sequenceName = "product_id_sequence", allocationSize = 1)
