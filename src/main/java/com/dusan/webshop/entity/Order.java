@@ -42,7 +42,7 @@ public class Order {
     @AttributeOverride(name = "city", column = @Column(name = "billing_city"))
     private Address billingAddress;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
