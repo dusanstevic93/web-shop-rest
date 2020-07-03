@@ -2,6 +2,7 @@ package com.dusan.webshop.api.controller;
 
 import com.dusan.webshop.dto.request.CreateOrderRequest;
 import com.dusan.webshop.dto.request.UpdateOrderStatusRequest;
+import com.dusan.webshop.dto.response.OrderItemResponse;
 import com.dusan.webshop.dto.response.OrderResponse;
 import com.dusan.webshop.service.OrderService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @Tag(name = "Order")
@@ -35,5 +37,10 @@ public class OrderController {
     @GetMapping(value = "/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public OrderResponse getOrder(@PathVariable long orderId) {
         return orderService.findOrderById(orderId);
+    }
+
+    @GetMapping(value = "/{orderId}/items", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<OrderItemResponse> getOrderItems(@PathVariable long orderId) {
+        return orderService.findAllOrderItems(orderId);
     }
 }

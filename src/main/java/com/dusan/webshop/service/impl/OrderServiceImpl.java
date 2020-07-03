@@ -1,11 +1,13 @@
 package com.dusan.webshop.service.impl;
 
 import com.dusan.webshop.dao.CustomerRepository;
+import com.dusan.webshop.dao.OrderItemRepository;
 import com.dusan.webshop.dao.OrderRepository;
 import com.dusan.webshop.dao.ProductRepository;
 import com.dusan.webshop.dto.request.CreateOrderRequest;
 import com.dusan.webshop.dto.request.OrderProduct;
 import com.dusan.webshop.dto.request.UpdateOrderStatusRequest;
+import com.dusan.webshop.dto.response.OrderItemResponse;
 import com.dusan.webshop.dto.response.OrderResponse;
 import com.dusan.webshop.entity.Address;
 import com.dusan.webshop.entity.Order;
@@ -25,12 +27,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
+    private OrderItemRepository orderItemRepository;
     private ProductRepository productRepository;
     private CustomerRepository customerRepository;
 
@@ -112,17 +116,11 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.updateOrderStatus(orderId, request.getOrderStatus());
     }
 
-    private void checkIfOrderExists(long orderId) {
-        boolean exists = orderRepository.existsById(orderId);
-        if (!exists)
-            throw new ResourceNotFoundException("Order with id = " + orderId + " does not exist");
-    }
-
     @Override
     @Transactional(readOnly = true)
     public OrderResponse findOrderById(long orderId) {
         Order order = getOrderFromDatabase(orderId);
-        return convertEntityToResponse(order);
+        return convertOrderEntityToResponse(order);
     }
 
     private Order getOrderFromDatabase(long orderId) {
@@ -130,7 +128,20 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Order with id = " + orderId + " does not exists"));
     }
 
-    private OrderResponse convertEntityToResponse(Order order) {
+    @Override
+    public List<OrderItemResponse> findAllOrderItems(long orderId) {
+        checkIfOrderExists(orderId);
+        List<OrderItem> orderItems = orderItemRepository.findAllOrderItemsOfSpecificOrder(orderId);
+        return orderItems.stream().map(this::convertOrderItemEntityToResponse).collect(Collectors.toList());
+    }
+
+    private void checkIfOrderExists(long orderId) {
+        boolean exists = orderRepository.existsById(orderId);
+        if (!exists)
+            throw new ResourceNotFoundException("Order with id = " + orderId + " does not exist");
+    }
+
+    private OrderResponse convertOrderEntityToResponse(Order order) {
         OrderResponse response = new OrderResponse();
 
         response.setCustomerId(order.getCustomer().getId());
@@ -147,6 +158,15 @@ public class OrderServiceImpl implements OrderService {
         response.setBillingZipCode(billingAddress.getZipCode());
         response.setBillingCity(billingAddress.getCity());
 
+        return response;
+    }
+
+    private OrderItemResponse convertOrderItemEntityToResponse(OrderItem orderItem) {
+        OrderItemResponse response = new OrderItemResponse();
+        response.setProductId(orderItem.getProduct().getId());
+        response.setPrice(orderItem.getPrice());
+        response.setWeight(orderItem.getWeight());
+        response.setQuantity(orderItem.getQuantity());
         return response;
     }
 }
