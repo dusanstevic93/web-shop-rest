@@ -4,20 +4,22 @@ import com.dusan.webshop.dao.CustomerRepository;
 import com.dusan.webshop.dao.OrderItemRepository;
 import com.dusan.webshop.dao.OrderRepository;
 import com.dusan.webshop.dao.ProductRepository;
-import com.dusan.webshop.dto.request.CreateOrderRequest;
-import com.dusan.webshop.dto.request.OrderProduct;
-import com.dusan.webshop.dto.request.UpdateOrderStatusRequest;
+import com.dusan.webshop.dto.request.*;
 import com.dusan.webshop.dto.response.OrderItemResponse;
 import com.dusan.webshop.dto.response.OrderResponse;
-import com.dusan.webshop.entity.Address;
-import com.dusan.webshop.entity.Order;
-import com.dusan.webshop.entity.OrderItem;
-import com.dusan.webshop.entity.Product;
+import com.dusan.webshop.entity.*;
 import com.dusan.webshop.entity.enums.OrderStatus;
+import com.dusan.webshop.entity.specification.CustomerOrderSpecification;
+import com.dusan.webshop.entity.specification.OrderSpecification;
 import com.dusan.webshop.service.OrderService;
 import com.dusan.webshop.service.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,6 +120,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
+    public Page<OrderResponse> findAllOrders(OrderFilterParams filterParams, OrderPageParams pageParams) {
+        Specification<Order> specification = new OrderSpecification(filterParams);
+        Pageable pageable = getPageable(pageParams);
+        Page<Order> page = orderRepository.findAll(specification, pageable);
+        return page.map(this::convertOrderEntityToResponse);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public OrderResponse findOrderById(long orderId) {
         Order order = getOrderFromDatabase(orderId);
         return convertOrderEntityToResponse(order);
@@ -129,6 +140,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OrderItemResponse> findAllOrderItems(long orderId) {
         checkIfOrderExists(orderId);
         List<OrderItem> orderItems = orderItemRepository.findAllOrderItemsOfSpecificOrder(orderId);
@@ -139,6 +151,31 @@ public class OrderServiceImpl implements OrderService {
         boolean exists = orderRepository.existsById(orderId);
         if (!exists)
             throw new ResourceNotFoundException("Order with id = " + orderId + " does not exist");
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<OrderResponse> findAllCustomerOrders(long customerId, OrderFilterParams filterParams, OrderPageParams pageParams) {
+        Specification<Order> orderSpecification = new OrderSpecification(filterParams)
+                .and(new CustomerOrderSpecification(customerId));
+        Pageable pageable = getPageable(pageParams);
+        Page<Order> orders = orderRepository.findAll(orderSpecification, pageable);
+        return orders.map(this::convertOrderEntityToResponse);
+    }
+
+    private Pageable getPageable(OrderPageParams pageParams) {
+        Sort sort = null;
+        switch (pageParams.getSort()) {
+            case DATE: sort = Sort.by(pageParams.getDirection(), "creationDate");
+            break;
+            case VALUE: sort = Sort.by(pageParams.getDirection(), "value");
+            break;
+            case WEIGHT: sort = Sort.by(pageParams.getDirection(), "totalWeight");
+            break;
+            case UNSORTED: sort = Sort.unsorted();
+            break;
+        }
+        return PageRequest.of(pageParams.getPage(), pageParams.getSize(), sort);
     }
 
     private OrderResponse convertOrderEntityToResponse(Order order) {
