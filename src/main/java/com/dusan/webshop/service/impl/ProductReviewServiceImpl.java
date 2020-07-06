@@ -104,4 +104,17 @@ public class ProductReviewServiceImpl implements ProductReviewService {
         response.setReview(productReview.getReview());
         return response;
     }
+
+    @Override
+    @Transactional
+    public void deleteProductReview(long customerId, long productId) {
+        ProductReviewPK id = new ProductReviewPK(customerId, productId);
+        ProductReview review = getProductReviewFromDatabase(id);
+        reviewRepository.delete(review);
+    }
+
+    private ProductReview getProductReviewFromDatabase(ProductReviewPK id) {
+        return reviewRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product review is not found"));
+    }
 }

@@ -10,4 +10,5 @@ public interface ProductReviewService {
 
     void createProductReview(long customerId, long productId, CreateProductReviewRequest request);
     Page<ProductReviewResponse> findAllProductReviews(ProductReviewFilterParams filterParams, ProductReviewPageParams pageParams);
+    void deleteProductReview(long customerId, long productId);
 }

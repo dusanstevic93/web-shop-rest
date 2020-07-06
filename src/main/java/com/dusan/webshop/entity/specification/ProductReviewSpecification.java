@@ -14,6 +14,7 @@ import java.util.List;
 
 public class ProductReviewSpecification implements Specification<ProductReview> {
 
+    private Long customerId;
     private Long productId;
     private LocalDate creationDateFrom;
     private LocalDate creationDateTo;
@@ -21,6 +22,7 @@ public class ProductReviewSpecification implements Specification<ProductReview> 
     private Integer ratingTo;
 
     public ProductReviewSpecification(ProductReviewFilterParams filterParams) {
+        this.customerId = filterParams.getCustomerId();
         this.productId = filterParams.getProductId();
         this.creationDateFrom = filterParams.getCreationDateFrom();
         this.creationDateTo = filterParams.getCreationDateTo();
@@ -31,6 +33,11 @@ public class ProductReviewSpecification implements Specification<ProductReview> 
     @Override
     public Predicate toPredicate(Root<ProductReview> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
+
+        if (customerId != null) {
+            Predicate p = criteriaBuilder.equal(root.get("customer").get("id"), customerId);
+            predicates.add(p);
+        }
 
         if (productId != null) {
             Predicate p = criteriaBuilder.equal(root.get("product").get("id"), productId);

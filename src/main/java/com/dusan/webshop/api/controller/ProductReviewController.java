@@ -36,4 +36,9 @@ public class ProductReviewController {
         Page<ProductReviewResponse> page = reviewService.findAllProductReviews(filterParams, pageParams);
         return ControllerUtils.createPageResponseWrapper(page);
     }
+
+    @DeleteMapping(value = "/reviews/{customerId}_{productId}")
+    public void deleteProductReview(@PathVariable long customerId, @PathVariable long productId) {
+        reviewService.deleteProductReview(customerId, productId);
+    }
 }

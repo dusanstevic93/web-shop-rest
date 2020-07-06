@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Setter
 public class ProductReviewFilterParams {
 
+    private Long customerId;
     private Long productId;
     private LocalDate creationDateFrom;
     private LocalDate creationDateTo;
