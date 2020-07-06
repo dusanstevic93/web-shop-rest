@@ -16,7 +16,6 @@ import java.time.LocalDate;
 // implement persistable to avoid select statement before inserting a new object
 public class ProductReview implements Persistable<ProductReviewPK> {
 
-    @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     @EmbeddedId
     private ProductReviewPK id = new ProductReviewPK();
