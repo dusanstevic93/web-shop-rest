@@ -1,4 +1,4 @@
-package com.dusan.webshop.dto.request;
+package com.dusan.webshop.dto.request.params;
 
 import com.dusan.webshop.entity.enums.OrderStatus;
 import lombok.Getter;

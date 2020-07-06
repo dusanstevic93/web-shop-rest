@@ -1,6 +1,6 @@
 package com.dusan.webshop.entity.specification;
 
-import com.dusan.webshop.dto.request.ProductReviewFilterParams;
+import com.dusan.webshop.dto.request.params.ProductReviewFilterParams;
 import com.dusan.webshop.entity.ProductReview;
 import org.springframework.data.jpa.domain.Specification;
 

@@ -1,6 +1,6 @@
 package com.dusan.webshop.entity.specification;
 
-import com.dusan.webshop.dto.request.ProductFilterParams;
+import com.dusan.webshop.dto.request.params.ProductFilterParams;
 import com.dusan.webshop.entity.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -62,6 +62,6 @@ public class ProductSpecification implements Specification<Product> {
             predicates.add(predicate);
         }
 
-        return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

@@ -2,7 +2,7 @@ package com.dusan.webshop.service.impl;
 
 import com.dusan.webshop.dao.ProductBrandRepository;
 import com.dusan.webshop.dto.request.CreateProductBrandRequest;
-import com.dusan.webshop.dto.request.ProductBrandPageParams;
+import com.dusan.webshop.dto.request.params.ProductBrandPageParams;
 import com.dusan.webshop.dto.response.ProductBrandResponse;
 import com.dusan.webshop.entity.ProductBrand;
 import com.dusan.webshop.service.exception.ResourceNotFoundException;

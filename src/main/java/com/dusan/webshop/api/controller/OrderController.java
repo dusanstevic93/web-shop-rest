@@ -1,8 +1,8 @@
 package com.dusan.webshop.api.controller;
 
 import com.dusan.webshop.dto.request.CreateOrderRequest;
-import com.dusan.webshop.dto.request.OrderFilterParams;
-import com.dusan.webshop.dto.request.OrderPageParams;
+import com.dusan.webshop.dto.request.params.OrderFilterParams;
+import com.dusan.webshop.dto.request.params.OrderPageParams;
 import com.dusan.webshop.dto.request.UpdateOrderStatusRequest;
 import com.dusan.webshop.dto.response.OrderItemResponse;
 import com.dusan.webshop.dto.response.OrderResponse;

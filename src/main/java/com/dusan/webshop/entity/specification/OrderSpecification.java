@@ -1,6 +1,6 @@
 package com.dusan.webshop.entity.specification;
 
-import com.dusan.webshop.dto.request.OrderFilterParams;
+import com.dusan.webshop.dto.request.params.OrderFilterParams;
 import com.dusan.webshop.entity.Order;
 import com.dusan.webshop.entity.enums.OrderStatus;
 import org.springframework.data.jpa.domain.Specification;

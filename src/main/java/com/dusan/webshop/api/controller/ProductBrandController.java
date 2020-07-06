@@ -4,7 +4,7 @@ import com.dusan.webshop.api.controller.exception.EmptyFileException;
 import com.dusan.webshop.api.controller.exception.FileFormatNotSupportedException;
 import com.dusan.webshop.api.docs.Descriptions;
 import com.dusan.webshop.dto.request.CreateProductBrandRequest;
-import com.dusan.webshop.dto.request.ProductBrandPageParams;
+import com.dusan.webshop.dto.request.params.ProductBrandPageParams;
 import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.dto.response.PageResponseWrapper;
 import com.dusan.webshop.dto.response.PageResponseWrapper.PageMetadata;

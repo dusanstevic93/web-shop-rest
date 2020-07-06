@@ -1,14 +1,12 @@
 package com.dusan.webshop.service;
 
 import com.dusan.webshop.dto.request.CreateProductRequest;
-import com.dusan.webshop.dto.request.ProductFilterParams;
-import com.dusan.webshop.dto.request.ProductPageParams;
+import com.dusan.webshop.dto.request.params.ProductFilterParams;
+import com.dusan.webshop.dto.request.params.ProductPageParams;
 import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.dto.response.ProductDetailsResponse;
 import com.dusan.webshop.dto.response.ProductResponse;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface ProductService {
 

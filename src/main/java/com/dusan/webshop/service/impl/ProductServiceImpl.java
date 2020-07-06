@@ -5,8 +5,8 @@ import com.dusan.webshop.dao.ProductCategoryRepository;
 import com.dusan.webshop.dao.ProductDetailsRepository;
 import com.dusan.webshop.dao.ProductRepository;
 import com.dusan.webshop.dto.request.CreateProductRequest;
-import com.dusan.webshop.dto.request.ProductFilterParams;
-import com.dusan.webshop.dto.request.ProductPageParams;
+import com.dusan.webshop.dto.request.params.ProductFilterParams;
+import com.dusan.webshop.dto.request.params.ProductPageParams;
 import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.dto.response.ImageResponse;
 import com.dusan.webshop.dto.response.ProductDetailsResponse;
@@ -67,13 +67,17 @@ public class ProductServiceImpl implements ProductService {
         Product product = details.getProduct();
 
         // when user is updating product category
-        if (request.getCategoryId() != product.getProductCategory().getId()) {
+        long newCategoryId = request.getCategoryId();
+        long oldCategoryId = product.getProductCategory().getId();
+        if (newCategoryId != oldCategoryId) {
             checkIfProductCategoryExists(request.getCategoryId());
             product.setProductCategory(categoryRepository.getOne(request.getCategoryId()));
         }
 
         // when user is updating product brand
-        if (request.getBrandId() != product.getProductBrand().getId()) {
+        long newBrandId = request.getBrandId();
+        long oldBrandId = product.getProductBrand().getId();
+        if (newBrandId != oldBrandId) {
             checkIfProductBrandExists(request.getBrandId());
             product.setProductBrand(brandRepository.getOne(request.getBrandId()));
         }

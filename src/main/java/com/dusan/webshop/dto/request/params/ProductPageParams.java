@@ -1,4 +1,4 @@
-package com.dusan.webshop.dto.request;
+package com.dusan.webshop.dto.request.params;
 
 import lombok.Getter;
 import lombok.Setter;

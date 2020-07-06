@@ -5,6 +5,8 @@ import com.dusan.webshop.dao.OrderItemRepository;
 import com.dusan.webshop.dao.OrderRepository;
 import com.dusan.webshop.dao.ProductRepository;
 import com.dusan.webshop.dto.request.*;
+import com.dusan.webshop.dto.request.params.OrderFilterParams;
+import com.dusan.webshop.dto.request.params.OrderPageParams;
 import com.dusan.webshop.dto.response.OrderItemResponse;
 import com.dusan.webshop.dto.response.OrderResponse;
 import com.dusan.webshop.entity.*;

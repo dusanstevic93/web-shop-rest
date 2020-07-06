@@ -1,8 +1,8 @@
 package com.dusan.webshop.service;
 
 import com.dusan.webshop.dto.request.CreateProductReviewRequest;
-import com.dusan.webshop.dto.request.ProductReviewFilterParams;
-import com.dusan.webshop.dto.request.ProductReviewPageParams;
+import com.dusan.webshop.dto.request.params.ProductReviewFilterParams;
+import com.dusan.webshop.dto.request.params.ProductReviewPageParams;
 import com.dusan.webshop.dto.response.ProductReviewResponse;
 import org.springframework.data.domain.Page;
 
