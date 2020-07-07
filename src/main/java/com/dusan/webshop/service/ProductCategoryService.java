@@ -1,7 +1,6 @@
 package com.dusan.webshop.service;
 
 import com.dusan.webshop.dto.request.CreateProductCategoryRequest;
-import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.dto.response.ProductCategoryResponse;
 
 import java.util.List;
