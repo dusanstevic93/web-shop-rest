@@ -1,11 +1,9 @@
 package com.dusan.webshop.storage;
 
-import com.dusan.webshop.dto.request.UploadedImage;
-
 import java.util.Map;
 
 public interface ImageStorage {
 
-    Map<String, String> saveImage(UploadedImage image);
+    Map<String, String> saveImage(byte[] bytes);
     void deleteImage(String publicId);
 }

@@ -1,13 +1,9 @@
 package com.dusan.webshop.api.controller;
 
-import com.dusan.webshop.api.controller.exception.EmptyFileException;
-import com.dusan.webshop.api.controller.exception.FileFormatNotSupportedException;
 import com.dusan.webshop.api.docs.Descriptions;
 import com.dusan.webshop.dto.request.CreateProductBrandRequest;
 import com.dusan.webshop.dto.request.params.ProductBrandPageParams;
-import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.dto.response.PageResponseWrapper;
-import com.dusan.webshop.dto.response.PageResponseWrapper.PageMetadata;
 import com.dusan.webshop.dto.response.ProductBrandResponse;
 import com.dusan.webshop.service.ProductBrandService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -69,13 +65,7 @@ public class ProductBrandController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public PageResponseWrapper<ProductBrandResponse> getAllProductBrands(@Valid @ParameterObject ProductBrandPageParams pageParams) {
         Page<ProductBrandResponse> page = brandService.findAllProductBrands(pageParams);
-        PageMetadata metadata = PageMetadata.of(
-                page.getNumber(),
-                page.getSize(),
-                page.getTotalElements(),
-                page.getTotalPages()
-        );
-        return new PageResponseWrapper<>(page.getContent(), metadata);
+        return ControllerUtils.createPageResponseWrapper(page);
     }
 
     @Operation(summary = "Upload brand logo", description = Descriptions.UPLOAD_PRODUCT_BRAND_LOGO,
@@ -84,16 +74,8 @@ public class ProductBrandController {
                              @ApiResponse(responseCode = "404", description = "Product brand is not found"),
                              @ApiResponse(responseCode = "422", description = "File format is not valid")})
     @PutMapping(value = "/{brandId}/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadProductBrandLogo(@PathVariable long brandId, @RequestBody MultipartFile image) throws Exception {
-        if (image == null)
-            throw new EmptyFileException("File must not be empty");
-
-        if (!image.getContentType().equals("image/jpeg"))
-            throw new FileFormatNotSupportedException(image.getContentType() + " is not supported");
-
-        UploadedImage uploadedImage = new UploadedImage();
-        uploadedImage.setName(image.getOriginalFilename());
-        uploadedImage.setBytes(image.getBytes());
-        brandService.addBrandLogo(brandId, uploadedImage);
+    public void uploadProductBrandLogo(@PathVariable long brandId, @RequestParam("image") MultipartFile image) throws Exception {
+        ControllerUtils.validateUploadedImage(image);
+        brandService.addBrandLogo(brandId, image.getBytes());
     }
 }

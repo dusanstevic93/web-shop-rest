@@ -1,13 +1,9 @@
 package com.dusan.webshop.api.controller;
 
-import com.dusan.webshop.api.controller.exception.EmptyFileException;
-import com.dusan.webshop.api.controller.exception.FileFormatNotSupportedException;
 import com.dusan.webshop.dto.request.CreateProductRequest;
 import com.dusan.webshop.dto.request.params.ProductFilterParams;
 import com.dusan.webshop.dto.request.params.ProductPageParams;
-import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.dto.response.PageResponseWrapper;
-import com.dusan.webshop.dto.response.PageResponseWrapper.PageMetadata;
 import com.dusan.webshop.dto.response.ProductResponse;
 import com.dusan.webshop.service.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,41 +47,19 @@ public class ProductController {
             @ParameterObject  ProductFilterParams filterParams,
             @Valid @ParameterObject ProductPageParams pageParams) {
         Page<ProductResponse> page = productService.findAllProducts(filterParams, pageParams);
-        PageMetadata metadata = PageMetadata.of(
-                page.getNumber(),
-                page.getSize(),
-                page.getTotalElements(),
-                page.getTotalPages()
-        );
-        return new PageResponseWrapper<>(page.getContent(), metadata);
+        return ControllerUtils.createPageResponseWrapper(page);
     }
 
     @PutMapping(value = "/{productId}/main-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void uploadMainImage(@PathVariable long productId, @RequestBody MultipartFile image) throws Exception {
-        if (image == null)
-            throw new EmptyFileException("File must not be empty");
-
-        if (!image.getContentType().equals("image/jpeg"))
-            throw new FileFormatNotSupportedException(image.getContentType() + " is not supported");
-
-        UploadedImage uploadedImage = new UploadedImage();
-        uploadedImage.setName(image.getOriginalFilename());
-        uploadedImage.setBytes(image.getBytes());
-        productService.addMainImage(productId, uploadedImage);
+        ControllerUtils.validateUploadedImage(image);
+        productService.addMainImage(productId, image.getBytes());
     }
 
     @PostMapping(value = "/{productId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void uploadImage(@PathVariable long productId, @RequestBody MultipartFile image) throws Exception {
-        if (image == null)
-            throw new EmptyFileException("File must not be empty");
-
-        if (!image.getContentType().equals("image/jpeg"))
-            throw new FileFormatNotSupportedException(image.getContentType() + " is not supported");
-
-        UploadedImage uploadedImage = new UploadedImage();
-        uploadedImage.setName(image.getOriginalFilename());
-        uploadedImage.setBytes(image.getBytes());
-        productService.addImage(productId, uploadedImage);
+        ControllerUtils.validateUploadedImage(image);
+        productService.addImage(productId, image.getBytes());
     }
 
     @DeleteMapping(value = "/{productId}/images/{imageId}")

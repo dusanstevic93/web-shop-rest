@@ -78,7 +78,7 @@ public class ProductBrandServiceImpl implements ProductBrandService {
 
     @Override
     @Transactional
-    public void addBrandLogo(long brandId, UploadedImage logo) {
+    public void addBrandLogo(long brandId, byte[] logo) {
         ProductBrand brand = getProductBrandFromDatabase(brandId);
         // delete old logo if exists
         if (brand.getImage() != null)

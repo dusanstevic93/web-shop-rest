@@ -14,7 +14,7 @@ public interface ProductService {
     void updateProduct(long productId, CreateProductRequest request);
     ProductDetailsResponse findProductDetailsById(long productId);
     Page<ProductResponse> findAllProducts(ProductFilterParams filterParams, ProductPageParams pageParams);
-    void addMainImage(long productId, UploadedImage image);
-    void addImage(long productId, UploadedImage image);
+    void addMainImage(long productId, byte[] image);
+    void addImage(long productId, byte[] image);
     void deleteImage(long productId, String imageId);
 }

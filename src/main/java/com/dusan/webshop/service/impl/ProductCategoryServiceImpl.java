@@ -2,7 +2,6 @@ package com.dusan.webshop.service.impl;
 
 import com.dusan.webshop.dao.ProductCategoryRepository;
 import com.dusan.webshop.dto.request.CreateProductCategoryRequest;
-import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.dto.response.ProductCategoryResponse;
 import com.dusan.webshop.entity.Image;
 import com.dusan.webshop.entity.ProductCategory;
@@ -68,13 +67,13 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     @Override
     @Transactional
-    public void addCategoryImage(long categoryId, UploadedImage uploadedImage) {
+    public void addCategoryImage(long categoryId, byte[] image) {
         ProductCategory category = findProductCategory(categoryId);
         if (category.getImage() != null)
             imageStorage.deleteImage(category.getImage().getImageId());
-        Map<String, String> response = imageStorage.saveImage(uploadedImage);
-        Image image = new Image(response.get("public_id"), response.get("url"));
-        category.setImage(image);
+        Map<String, String> response = imageStorage.saveImage(image);
+        Image categoryImage = new Image(response.get("public_id"), response.get("url"));
+        category.setImage(categoryImage);
     }
 
     private ProductCategory findProductCategory(long categoryId) {

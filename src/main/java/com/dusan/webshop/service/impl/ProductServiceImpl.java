@@ -7,7 +7,6 @@ import com.dusan.webshop.dao.ProductRepository;
 import com.dusan.webshop.dto.request.CreateProductRequest;
 import com.dusan.webshop.dto.request.params.ProductFilterParams;
 import com.dusan.webshop.dto.request.params.ProductPageParams;
-import com.dusan.webshop.dto.request.UploadedImage;
 import com.dusan.webshop.dto.response.ImageResponse;
 import com.dusan.webshop.dto.response.ProductDetailsResponse;
 import com.dusan.webshop.dto.response.ProductResponse;
@@ -163,14 +162,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void addMainImage(long productId, UploadedImage uploadedImage) {
+    public void addMainImage(long productId, byte[] image) {
         Product product = getProductFromDatabase(productId);
         if (product.getMainImage() != null)
             imageStorage.deleteImage(product.getMainImage().getImageId());
 
-        Map<String, String> response = imageStorage.saveImage(uploadedImage);
-        Image image = new Image(response.get("public_id"), response.get("url"));
-        product.setMainImage(image);
+        Map<String, String> response = imageStorage.saveImage(image);
+        Image productImage = new Image(response.get("public_id"), response.get("url"));
+        product.setMainImage(productImage);
     }
 
     private Product getProductFromDatabase(long productId) {
@@ -180,9 +179,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void addImage(long productId, UploadedImage uploadedImage) {
+    public void addImage(long productId, byte[] image) {
         checkIfProductExists(productId);
-        Map<String, String> response = imageStorage.saveImage(uploadedImage);
+        Map<String, String> response = imageStorage.saveImage(image);
         detailsRepository.insertImage(productId, response.get("public_id"), response.get("url"));
     }
 
