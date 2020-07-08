@@ -1,7 +1,7 @@
 package com.dusan.webshop.api.controller;
 
 import com.dusan.webshop.api.controller.exception.EmptyFileException;
-import com.dusan.webshop.api.controller.exception.FileFormatNotSupportedException;
+import com.dusan.webshop.api.controller.exception.UnsupportedFileFormatException;
 import com.dusan.webshop.dto.response.PageResponseWrapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -26,6 +26,6 @@ class ControllerUtils {
             throw new EmptyFileException("File must not be empty");
 
         if (!image.getContentType().equals("image/jpeg"))
-            throw new FileFormatNotSupportedException(image.getContentType() + " is not supported");
+            throw new UnsupportedFileFormatException(image.getContentType() + " is not supported");
     }
 }

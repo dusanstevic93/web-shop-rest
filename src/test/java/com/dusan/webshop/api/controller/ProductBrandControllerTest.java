@@ -112,7 +112,21 @@ class ProductBrandControllerTest extends ControllerTestSetup {
     void uploadProductBrandLogoAdmin() throws Exception {
         MockMultipartFile mockFile = new MockMultipartFile("image", "test.jpg", MediaType.IMAGE_JPEG_VALUE, "test".getBytes());
         mvc.perform(multipart("/brands/1/logo").file(mockFile))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void uploadProductBrandLogoAdminEmptyFile() throws Exception {
+        MockMultipartFile emptyFile = new MockMultipartFile("image", new byte[0]);
+        mvc.perform(multipart("/brands/1/logo").file(emptyFile)).andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void uploadProductBrandLogoAdminUnsupportedFileFormat() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("image", "test", "application/xml", "test".getBytes());
+        mvc.perform(multipart("/brands/1/logo").file(file)).andExpect(status().isUnprocessableEntity());
     }
 
     @Test
