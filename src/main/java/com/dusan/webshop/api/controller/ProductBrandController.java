@@ -73,7 +73,7 @@ public class ProductBrandController {
                              @ApiResponse(responseCode = "400", description = "Empty file"),
                              @ApiResponse(responseCode = "404", description = "Product brand is not found"),
                              @ApiResponse(responseCode = "422", description = "File format is not valid")})
-    @PutMapping(value = "/{brandId}/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/{brandId}/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void uploadProductBrandLogo(@PathVariable long brandId, @RequestParam("image") MultipartFile image) throws Exception {
         ControllerUtils.validateUploadedImage(image);
         brandService.addBrandLogo(brandId, image.getBytes());
