@@ -61,11 +61,11 @@ public class ProductCategoryController {
 
     @Operation(summary = "Upload category image", description = Descriptions.UPLOAD_CATEGORY_IMAGE,
             responses = {@ApiResponse(responseCode = "200", description = "Successful operation"),
-                    @ApiResponse(responseCode = "400", description = "Empty file"),
                     @ApiResponse(responseCode = "404", description = "Product brand is not found"),
-                    @ApiResponse(responseCode = "422", description = "File format is not valid")})
-    @PutMapping(value = "/{categoryId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadCategoryImage(@PathVariable long categoryId, @RequestBody MultipartFile image) throws Exception {
+                    @ApiResponse(responseCode = "422", description = "Image upload error")})
+    @PostMapping(value = "/{categoryId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void uploadCategoryImage(@PathVariable long categoryId, @RequestParam("image") MultipartFile image) throws Exception {
         ControllerUtils.validateUploadedImage(image);
         categoryService.addCategoryImage(categoryId, image.getBytes());
     }

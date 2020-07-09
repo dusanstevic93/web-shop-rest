@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -115,6 +116,40 @@ class ProductCategoryControllerTest extends ControllerTestSetup {
     }
 
     @Test
-    void uploadCategoryImage() {
+    @WithMockUser(roles = "ADMIN")
+    void uploadCategoryImageAdmin() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("image", "test.jpg", MediaType.IMAGE_JPEG_VALUE, "test".getBytes());
+        mvc.perform(multipart("/categories/1/image").file(file))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void uploadCategoryImageAdminEmptyFile() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("image", new byte[0]);
+        mvc.perform(multipart("/categories/1/image").file(file))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void uploadCategoryImageAdminUnsupportedFileFormat() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("image", "test.xml", MediaType.APPLICATION_XML_VALUE, "test".getBytes());
+        mvc.perform(multipart("/categories/1/image").file(file))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithMockUser(roles = "CUSTOMER")
+    void uploadCategoryImageCustomer() throws Exception {
+        mvc.perform(multipart("/categories/1/image"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithAnonymousUser
+    void uploadCategoryImageAnonymousUser() throws Exception {
+        mvc.perform(multipart("/categories/1/image"))
+                .andExpect(status().isForbidden());
     }
 }
