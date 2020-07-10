@@ -50,14 +50,16 @@ public class ProductController {
         return ControllerUtils.createPageResponseWrapper(page);
     }
 
-    @PutMapping(value = "/{productId}/main-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadMainImage(@PathVariable long productId, @RequestBody MultipartFile image) throws Exception {
+    @PostMapping(value = "/{productId}/main-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void uploadMainImage(@PathVariable long productId, @RequestParam("main-image") MultipartFile image) throws Exception {
         ControllerUtils.validateUploadedImage(image);
         productService.addMainImage(productId, image.getBytes());
     }
 
     @PostMapping(value = "/{productId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadImage(@PathVariable long productId, @RequestBody MultipartFile image) throws Exception {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void uploadImage(@PathVariable long productId, @RequestParam("image") MultipartFile image) throws Exception {
         ControllerUtils.validateUploadedImage(image);
         productService.addImage(productId, image.getBytes());
     }
