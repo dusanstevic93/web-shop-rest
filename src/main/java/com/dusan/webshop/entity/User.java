@@ -29,6 +29,6 @@ public abstract class User {
 
     private String lastName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserRole userRole;
 }
