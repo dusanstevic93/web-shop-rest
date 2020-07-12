@@ -36,13 +36,13 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
     @Override
     @Transactional
-    public void createProductReview(long customerId, long productId, CreateProductReviewRequest request) {
+    public void createProductReview(long customerId, CreateProductReviewRequest request) {
         checkIfCustomerExists(customerId);
-        checkIfProductExists(productId);
-        checkIfCustomerAlreadyCreatedReview(customerId, productId);
+        checkIfProductExists(request.getProductId());
+        checkIfCustomerAlreadyCreatedReview(customerId, request.getProductId());
 
         Customer customer = customerRepository.getOne(customerId);
-        Product product = productRepository.getOne(productId);
+        Product product = productRepository.getOne(request.getProductId());
 
         ProductReview review = new ProductReview(true);
         review.setCustomer(customer);

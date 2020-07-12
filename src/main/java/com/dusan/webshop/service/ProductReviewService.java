@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 
 public interface ProductReviewService {
 
-    void createProductReview(long customerId, long productId, CreateProductReviewRequest request);
+    void createProductReview(long customerId, CreateProductReviewRequest request);
     Page<ProductReviewResponse> findAllProductReviews(ProductReviewFilterParams filterParams, ProductReviewPageParams pageParams);
     void deleteProductReview(long customerId, long productId);
 }

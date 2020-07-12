@@ -19,17 +19,18 @@ import javax.validation.Valid;
 @Tag(name = "Review")
 @AllArgsConstructor
 @RestController
+@RequestMapping("/reviews")
 public class ProductReviewController {
 
     private ProductReviewService reviewService;
 
-    @PostMapping(value = "/products/{productId}/reviews", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProductReview(@PathVariable long productId, @RequestBody CreateProductReviewRequest request) {
-        reviewService.createProductReview(1L, productId, request);
+    public void createProductReview(@RequestBody CreateProductReviewRequest request) {
+        reviewService.createProductReview(1L, request);
     }
 
-    @GetMapping(value = "/reviews", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public PageResponseWrapper<ProductReviewResponse> getProductReviews(
             @ParameterObject ProductReviewFilterParams filterParams,
             @Valid @ParameterObject ProductReviewPageParams pageParams) {
@@ -37,7 +38,7 @@ public class ProductReviewController {
         return ControllerUtils.createPageResponseWrapper(page);
     }
 
-    @DeleteMapping(value = "/reviews/{customerId}_{productId}")
+    @DeleteMapping(value = "/{customerId}_{productId}")
     public void deleteProductReview(@PathVariable long customerId, @PathVariable long productId) {
         reviewService.deleteProductReview(customerId, productId);
     }
