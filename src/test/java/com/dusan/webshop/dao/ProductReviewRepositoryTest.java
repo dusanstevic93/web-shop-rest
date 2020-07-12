@@ -28,11 +28,11 @@ class ProductReviewRepositoryTest {
 
 
     @Test
-    @Sql("classpath:scripts/create-product-review-setup.sql")
+    @Sql("/scripts/insert-test-data.sql")
     void testSaveProductReview() {
         // given
-        Product product = productRepository.getOne(1L);
-        Customer customer = customerRepository.getOne(1L);
+        Product product = productRepository.getOne(0L);
+        Customer customer = customerRepository.getOne(0L);
         ProductReview review = new ProductReview(true);
         review.setCreationDate(LocalDate.now());
         review.setReview("Test review");

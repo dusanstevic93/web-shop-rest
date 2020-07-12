@@ -1,15 +1,13 @@
 package com.dusan.webshop.dao;
 
-import com.dusan.webshop.entity.Order;
 import com.dusan.webshop.entity.OrderItem;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.jdbc.Sql;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,23 +16,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderItemRepositoryTest {
 
     @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
     private OrderItemRepository orderItemRepository;
 
     @Test
-    @Sql({"classpath:scripts/create-order-setup.sql", "classpath:scripts/insert-order.sql"})
-    void testFindAllByOrder() {
+    @Sql("/scripts/insert-test-data.sql")
+    void testFindAllOrderItemsBySpecificOrder() {
         // given
-        int expectedNumberOfItems = 2;
-        Order order = orderRepository.getOne(1L);
-        Pageable pageable = PageRequest.of(0, 5);
+        int expectedNumberOfItems = 1;
 
         // when
-        Page<OrderItem> items = orderItemRepository.findAllByOrder(order, pageable);
+        List<OrderItem> orderItems = orderItemRepository.findAllOrderItemsOfSpecificOrder(0L);
 
         // then
-        assertEquals(expectedNumberOfItems, items.getContent().size());
+        assertEquals(expectedNumberOfItems, orderItems.size());
     }
 }

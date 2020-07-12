@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,7 +23,7 @@ class ProductCategoryRepositoryTest {
     void testSaveCategory() {
         // given
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setName("Category A");
+        productCategory.setName("TEST CATEGORY");
 
         // when
         ProductCategory savedCategory = repository.saveAndFlush(productCategory);
@@ -33,10 +33,12 @@ class ProductCategoryRepositoryTest {
     }
 
     @Test
-    @Sql("classpath:scripts/insert-category.sql")
+    @Sql("/scripts/insert-test-data.sql")
     void testAddSubcategoryToExistingCategory() {
         // given
-        ProductCategory parent = repository.findById(1L).get();
+        int expectedNumberOfSubcategories = 2;
+
+        ProductCategory parent = repository.findById(0L).get();
 
         ProductCategory subcategory1 = new ProductCategory();
         subcategory1.setName("Subcategory 1");
@@ -56,22 +58,23 @@ class ProductCategoryRepositoryTest {
         ProductCategory savedParentCategory = repository.saveAndFlush(parent);
 
         // then
-        assertEquals(parent.getSubCategories().size(), savedParentCategory.getSubCategories().size());
+        assertEquals(expectedNumberOfSubcategories, savedParentCategory.getSubCategories().size());
     }
 
     @Test
-    @Sql(value = "classpath:scripts/insert-category-and-subcategories.sql")
-    void testFindByIdFetchSubcategories() {
+    @Sql({"/scripts/insert-test-data.sql", "/scripts/insert-categories.sql"})
+    void testFindAllCategoriesFetchSubcategories() {
         // given
-        /*int expectedNumberOfSubcategories = 2;
+        int expectedNumberOfSubcategories = 2;
 
         // when
-        ProductCategory parentCategory = repository.findByIdFetchSubCategories(1L).get();
+        List<ProductCategory> categories = repository.findAllCategoriesFetchSubcategories();
 
         // then
+        List<ProductCategory> subcategories = categories.get(0).getSubCategories();
         assertAll(
-                () -> assertTrue(Hibernate.isInitialized(parentCategory.getSubCategories())),
-                () -> assertEquals(expectedNumberOfSubcategories, parentCategory.getSubCategories().size())
-        );*/
+                () -> assertTrue(Hibernate.isInitialized(subcategories)),
+                () -> assertEquals(expectedNumberOfSubcategories, subcategories.size())
+        );
     }
 }

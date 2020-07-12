@@ -30,17 +30,17 @@ class ProductDetailsRepositoryTest {
 
 
     @Test
-    @Sql("classpath:scripts/create-product-setup.sql")
+    @Sql("/scripts/insert-test-data.sql")
     void testSaveProductDetails() {
         // given
-        ProductCategory category = categoryRepository.getOne(1L);
-        ProductBrand brand = brandRepository.getOne(1L);
+        ProductCategory category = categoryRepository.getOne(0L);
+        ProductBrand brand = brandRepository.getOne(0L);
 
         Product product = new Product();
         product.setName("A10");
-        product.setPrice(new BigDecimal(350.00));
+        product.setPrice(new BigDecimal("350.00"));
         product.setQuantity(15);
-        product.setWeight(new BigDecimal(0.2));
+        product.setWeight(new BigDecimal("0.2"));
         product.setShortDescription("Mobile phone");
         product.setProductBrand(brand);
         product.setProductCategory(category);
@@ -57,10 +57,10 @@ class ProductDetailsRepositoryTest {
     }
 
     @Test
-    @Sql("classpath:scripts/insert-product-with-details.sql")
+    @Sql("/scripts/insert-test-data.sql")
     void testAddProductImage() {
         // given
-        ProductDetails productDetails = productDetailsRepository.findById(1L).get();
+        ProductDetails productDetails = productDetailsRepository.findById(0L).get();
 
         Image image1 = new Image("id1", "url1");
         Image image2 = new Image("id2", "url2");

@@ -19,7 +19,7 @@ class UserRoleRepositoryTest {
     void testSaveRole() {
         // given
         UserRole userRole = new UserRole();
-        userRole.setName("CUSTOMER");
+        userRole.setName("TEST");
 
         // when
         UserRole savedRole = repository.saveAndFlush(userRole);

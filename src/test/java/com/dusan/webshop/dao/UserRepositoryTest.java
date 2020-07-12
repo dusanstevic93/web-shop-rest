@@ -22,7 +22,7 @@ class UserRepositoryTest {
     private UserRoleRepository roleRepository;
 
     @Test
-    @Sql("classpath:scripts/insert-roles.sql")
+    @Sql("/scripts/insert-test-data.sql")
     void testSaveCustomer() {
         // given
         Customer customer = new Customer();
@@ -39,7 +39,7 @@ class UserRepositoryTest {
         address.setCity("Belgrade");
         customer.setAddress(address);
 
-        UserRole role = roleRepository.getOne(2L);
+        UserRole role = roleRepository.getOne(0L);
         customer.setUserRole(role);
 
         // when

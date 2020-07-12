@@ -30,7 +30,7 @@ class OrderRepositoryTest {
     private ProductRepository productRepository;
 
     @Test
-    @Sql("classpath:scripts/create-order-setup.sql")
+    @Sql("/scripts/insert-test-data.sql")
     void testSaveOrder() {
         // given
         Order order = new Order();
@@ -50,24 +50,18 @@ class OrderRepositoryTest {
         billingAddress.setCity("Billing city");
         order.setBillingAddress(billingAddress);
 
-        Customer customer = customerRepository.getOne(1L);
+        Customer customer = customerRepository.getOne(0L);
         order.setCustomer(customer);
 
         OrderItem item1 = new OrderItem();
-        item1.setProduct(productRepository.getOne(1L));
+        item1.setProduct(productRepository.getOne(0L));
         item1.setOrder(order);
         item1.setPrice(new BigDecimal(500));
-        item1.setWeight(new BigDecimal(0.5));
+        item1.setWeight(new BigDecimal("0.5"));
         item1.setQuantity(10);
         order.addOrderItem(item1);
 
-        OrderItem item2 = new OrderItem();
-        item2.setProduct(productRepository.getOne(2L));
-        item2.setOrder(order);
-        item2.setPrice(new BigDecimal(500));
-        item2.setWeight(new BigDecimal(0.5));
-        item2.setQuantity(10);
-        order.addOrderItem(item2);
+        order.setTotalWeight(new BigDecimal("0.5"));
 
         // when
         Order savedOrder = orderRepository.saveAndFlush(order);

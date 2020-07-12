@@ -21,7 +21,7 @@ class ProductBrandRepositoryTest {
     void testSaveProductBrand() {
         // given
         ProductBrand brand = new ProductBrand();
-        brand.setName("Brand A");
+        brand.setName("Test");
 
         // when
         ProductBrand savedBrand = repository.saveAndFlush(brand);
