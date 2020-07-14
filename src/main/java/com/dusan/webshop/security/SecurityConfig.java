@@ -1,6 +1,6 @@
 package com.dusan.webshop.security;
 
-import com.dusan.webshop.dao.UserRepository;
+import com.dusan.webshop.dao.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

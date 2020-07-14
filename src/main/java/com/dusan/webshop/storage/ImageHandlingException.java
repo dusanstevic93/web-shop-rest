@@ -1,4 +1,4 @@
-package com.dusan.webshop.service.exception;
+package com.dusan.webshop.storage;
 
 public class ImageHandlingException extends RuntimeException {
 

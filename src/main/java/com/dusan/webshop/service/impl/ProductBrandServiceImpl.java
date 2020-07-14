@@ -1,6 +1,6 @@
 package com.dusan.webshop.service.impl;
 
-import com.dusan.webshop.dao.ProductBrandRepository;
+import com.dusan.webshop.dao.repository.ProductBrandRepository;
 import com.dusan.webshop.dto.request.CreateProductBrandRequest;
 import com.dusan.webshop.dto.request.params.ProductBrandPageParams;
 import com.dusan.webshop.dto.response.ProductBrandResponse;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 @Service
-public class ProductBrandServiceImpl implements ProductBrandService {
+class ProductBrandServiceImpl implements ProductBrandService {
 
     private ProductBrandRepository productBrandRepository;
     private ImageStorage imageStorage;

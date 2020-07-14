@@ -2,7 +2,6 @@ package com.dusan.webshop.storage;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.dusan.webshop.service.exception.ImageHandlingException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +10,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 @Component
-public class ImageStorageImpl implements ImageStorage {
+class ImageStorageImpl implements ImageStorage {
 
     private Cloudinary cloudinary;
 

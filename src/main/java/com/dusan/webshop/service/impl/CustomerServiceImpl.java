@@ -1,7 +1,7 @@
 package com.dusan.webshop.service.impl;
 
-import com.dusan.webshop.dao.CustomerRepository;
-import com.dusan.webshop.dao.UserRepository;
+import com.dusan.webshop.dao.repository.CustomerRepository;
+import com.dusan.webshop.dao.repository.UserRepository;
 import com.dusan.webshop.dto.request.UpdateCustomerRequest;
 import com.dusan.webshop.dto.request.params.PageParams;
 import com.dusan.webshop.dto.response.CustomerResponse;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class CustomerServiceImpl implements CustomerService {
+class CustomerServiceImpl implements CustomerService {
 
     private UserRepository userRepository;
 

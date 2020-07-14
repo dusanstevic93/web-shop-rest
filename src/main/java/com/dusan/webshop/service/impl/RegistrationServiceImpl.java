@@ -1,7 +1,7 @@
 package com.dusan.webshop.service.impl;
 
-import com.dusan.webshop.dao.UserRepository;
-import com.dusan.webshop.dao.UserRoleRepository;
+import com.dusan.webshop.dao.repository.UserRepository;
+import com.dusan.webshop.dao.repository.UserRoleRepository;
 import com.dusan.webshop.dto.request.CustomerRegistrationRequest;
 import com.dusan.webshop.entity.Address;
 import com.dusan.webshop.entity.Customer;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class RegistrationServiceImpl implements RegistrationService {
+class RegistrationServiceImpl implements RegistrationService {
 
     private PasswordEncoder passwordEncoder;
     private UserRepository userRepository;

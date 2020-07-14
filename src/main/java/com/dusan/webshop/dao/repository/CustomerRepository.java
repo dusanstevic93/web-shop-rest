@@ -1,4 +1,4 @@
-package com.dusan.webshop.dao;
+package com.dusan.webshop.dao.repository;
 
 import com.dusan.webshop.entity.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;

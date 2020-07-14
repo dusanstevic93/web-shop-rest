@@ -1,6 +1,6 @@
 package com.dusan.webshop.service.impl;
 
-import com.dusan.webshop.dao.ProductCategoryRepository;
+import com.dusan.webshop.dao.repository.ProductCategoryRepository;
 import com.dusan.webshop.dto.request.CreateProductCategoryRequest;
 import com.dusan.webshop.dto.response.ProductCategoryResponse;
 import com.dusan.webshop.entity.Image;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-public class ProductCategoryServiceImpl implements ProductCategoryService {
+class ProductCategoryServiceImpl implements ProductCategoryService {
 
     private ProductCategoryRepository categoryRepository;
     private ImageStorage imageStorage;

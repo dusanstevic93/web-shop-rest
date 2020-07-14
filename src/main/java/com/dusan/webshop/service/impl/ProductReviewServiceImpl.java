@@ -1,8 +1,8 @@
 package com.dusan.webshop.service.impl;
 
-import com.dusan.webshop.dao.CustomerRepository;
-import com.dusan.webshop.dao.ProductRepository;
-import com.dusan.webshop.dao.ProductReviewRepository;
+import com.dusan.webshop.dao.repository.CustomerRepository;
+import com.dusan.webshop.dao.repository.ProductRepository;
+import com.dusan.webshop.dao.repository.ProductReviewRepository;
 import com.dusan.webshop.dto.request.CreateProductReviewRequest;
 import com.dusan.webshop.dto.request.params.ProductReviewFilterParams;
 import com.dusan.webshop.dto.request.params.ProductReviewPageParams;
@@ -11,7 +11,7 @@ import com.dusan.webshop.entity.Customer;
 import com.dusan.webshop.entity.Product;
 import com.dusan.webshop.entity.ProductReview;
 import com.dusan.webshop.entity.ProductReviewPK;
-import com.dusan.webshop.entity.specification.ProductReviewSpecification;
+import com.dusan.webshop.dao.specification.ProductReviewSpecification;
 import com.dusan.webshop.service.ProductReviewService;
 import com.dusan.webshop.service.exception.ConflictException;
 import com.dusan.webshop.service.exception.ResourceNotFoundException;
@@ -28,7 +28,7 @@ import java.time.LocalDate;
 
 @AllArgsConstructor
 @Service
-public class ProductReviewServiceImpl implements ProductReviewService {
+class ProductReviewServiceImpl implements ProductReviewService {
 
     private CustomerRepository customerRepository;
     private ProductRepository productRepository;

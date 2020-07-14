@@ -1,9 +1,9 @@
 package com.dusan.webshop.service.impl;
 
-import com.dusan.webshop.dao.ProductBrandRepository;
-import com.dusan.webshop.dao.ProductCategoryRepository;
-import com.dusan.webshop.dao.ProductDetailsRepository;
-import com.dusan.webshop.dao.ProductRepository;
+import com.dusan.webshop.dao.repository.ProductBrandRepository;
+import com.dusan.webshop.dao.repository.ProductCategoryRepository;
+import com.dusan.webshop.dao.repository.ProductDetailsRepository;
+import com.dusan.webshop.dao.repository.ProductRepository;
 import com.dusan.webshop.dto.request.CreateProductRequest;
 import com.dusan.webshop.dto.request.params.ProductFilterParams;
 import com.dusan.webshop.dto.request.params.ProductPageParams;
@@ -11,7 +11,7 @@ import com.dusan.webshop.dto.response.ImageResponse;
 import com.dusan.webshop.dto.response.ProductDetailsResponse;
 import com.dusan.webshop.dto.response.ProductResponse;
 import com.dusan.webshop.entity.*;
-import com.dusan.webshop.entity.specification.ProductSpecification;
+import com.dusan.webshop.dao.specification.ProductSpecification;
 import com.dusan.webshop.service.ProductService;
 import com.dusan.webshop.service.exception.ResourceNotFoundException;
 import com.dusan.webshop.storage.ImageStorage;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-public class ProductServiceImpl implements ProductService {
+class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
     private ProductDetailsRepository detailsRepository;

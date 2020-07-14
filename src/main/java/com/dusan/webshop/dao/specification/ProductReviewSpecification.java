@@ -1,4 +1,4 @@
-package com.dusan.webshop.entity.specification;
+package com.dusan.webshop.dao.specification;
 
 import com.dusan.webshop.dto.request.params.ProductReviewFilterParams;
 import com.dusan.webshop.entity.ProductReview;

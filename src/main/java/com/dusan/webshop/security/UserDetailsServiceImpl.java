@@ -1,6 +1,6 @@
 package com.dusan.webshop.security;
 
-import com.dusan.webshop.dao.UserRepository;
+import com.dusan.webshop.dao.repository.UserRepository;
 import com.dusan.webshop.dao.projection.AuthenticationProjection;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

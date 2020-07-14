@@ -1,4 +1,4 @@
-package com.dusan.webshop.dao;
+package com.dusan.webshop.dao.repository;
 
 import com.dusan.webshop.entity.Order;
 import com.dusan.webshop.entity.OrderItem;

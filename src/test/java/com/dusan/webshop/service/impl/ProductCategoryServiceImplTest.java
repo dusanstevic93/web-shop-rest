@@ -1,6 +1,6 @@
 package com.dusan.webshop.service.impl;
 
-import com.dusan.webshop.dao.ProductCategoryRepository;
+import com.dusan.webshop.dao.repository.ProductCategoryRepository;
 import com.dusan.webshop.dto.request.CreateProductCategoryRequest;
 import com.dusan.webshop.entity.ProductCategory;
 import com.dusan.webshop.service.exception.ResourceNotFoundException;
@@ -59,12 +59,7 @@ class ProductCategoryServiceImplTest {
         categoryService.createProductSubcategory(parentId, request);
 
         // then
-        ArgumentCaptor<ProductCategory> argumentCaptor = ArgumentCaptor.forClass(ProductCategory.class);
-        then(categoryRepository).should().save(argumentCaptor.capture());
-        ProductCategory savedParent = argumentCaptor.getValue();
-        assertAll(
-                () -> assertEquals("Subcategory", savedParent.getSubCategories().get(0).getName())
-        );
+        assertEquals("Subcategory", parentCategory.getSubCategories().get(0).getName());
     }
 
     @Test

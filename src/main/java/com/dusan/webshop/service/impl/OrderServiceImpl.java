@@ -1,9 +1,9 @@
 package com.dusan.webshop.service.impl;
 
-import com.dusan.webshop.dao.CustomerRepository;
-import com.dusan.webshop.dao.OrderItemRepository;
-import com.dusan.webshop.dao.OrderRepository;
-import com.dusan.webshop.dao.ProductRepository;
+import com.dusan.webshop.dao.repository.CustomerRepository;
+import com.dusan.webshop.dao.repository.OrderItemRepository;
+import com.dusan.webshop.dao.repository.OrderRepository;
+import com.dusan.webshop.dao.repository.ProductRepository;
 import com.dusan.webshop.dto.request.*;
 import com.dusan.webshop.dto.request.params.OrderFilterParams;
 import com.dusan.webshop.dto.request.params.OrderPageParams;
@@ -11,8 +11,8 @@ import com.dusan.webshop.dto.response.OrderItemResponse;
 import com.dusan.webshop.dto.response.OrderResponse;
 import com.dusan.webshop.entity.*;
 import com.dusan.webshop.entity.enums.OrderStatus;
-import com.dusan.webshop.entity.specification.CustomerOrderSpecification;
-import com.dusan.webshop.entity.specification.OrderSpecification;
+import com.dusan.webshop.dao.specification.CustomerOrderSpecification;
+import com.dusan.webshop.dao.specification.OrderSpecification;
 import com.dusan.webshop.service.OrderService;
 import com.dusan.webshop.service.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-public class OrderServiceImpl implements OrderService {
+class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
     private OrderItemRepository orderItemRepository;
