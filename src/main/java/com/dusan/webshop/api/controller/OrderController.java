@@ -14,6 +14,7 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,8 +30,9 @@ public class OrderController {
 
     @PostMapping(value = "/orders", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@Valid @RequestBody CreateOrderRequest request) {
-        orderService.createOrder(1, request);
+    public void createOrder(@Valid @RequestBody CreateOrderRequest request, Authentication auth) {
+        long customerId = (long) auth.getPrincipal();
+        orderService.createOrder(customerId, request);
     }
 
     @PutMapping(value = "/orders/{orderId}/status", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -63,5 +65,21 @@ public class OrderController {
             @ParameterObject OrderPageParams pageParams) {
         Page<OrderResponse> page = orderService.findAllCustomerOrders(customerId, filterParams, pageParams);
         return ControllerUtils.createPageResponseWrapper(page);
+    }
+
+    @GetMapping(value = "/customers/me/orders", produces = MediaType.APPLICATION_JSON_VALUE)
+    public PageResponseWrapper<OrderResponse> getAuthenticatedCustomerOrders(
+            @ParameterObject OrderFilterParams filterParams,
+            @ParameterObject OrderPageParams pageParams,
+            Authentication auth) {
+        long customerId = (long) auth.getPrincipal();
+        Page<OrderResponse> page = orderService.findAllCustomerOrders(customerId, filterParams, pageParams);
+        return ControllerUtils.createPageResponseWrapper(page);
+    }
+
+    @GetMapping(value = "/customers/me/orders/{orderId}/items")
+    public List<OrderItemResponse> getAuthenticatedCustomerOrderItems(@PathVariable long orderId, Authentication auth) {
+        long customerId = (long) auth.getPrincipal();
+        return orderService.findAllOrderItems(customerId, orderId);
     }
 }

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,8 +22,9 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PutMapping(value = "/me", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateCustomer(@Valid @RequestBody UpdateCustomerRequest request) {
-        customerService.updateCustomer(1, request);
+    public void updateAuthenticatedCustomer(@Valid @RequestBody UpdateCustomerRequest request, Authentication auth) {
+        long userId = (long) auth.getPrincipal();
+        customerService.updateCustomer(userId, request);
     }
 
     @GetMapping(value = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,8 +33,9 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CustomerResponse getAuthenticatedCustomer() {
-        return customerService.findCustomerById(1);
+    public CustomerResponse getAuthenticatedCustomer(Authentication auth) {
+        long userId = (long) auth.getPrincipal();
+        return customerService.findCustomerById(userId);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

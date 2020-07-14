@@ -31,7 +31,7 @@ class CustomerControllerTest extends ControllerTestSetup {
     private MockMvc mvc;
 
     @Test
-    @WithMockUser(roles = "CUSTOMER")
+    @WithCustomMockUser(roles = "CUSTOMER")
     void updateCustomerRoleCustomer() throws Exception {
         UpdateCustomerRequest request = new UpdateCustomerRequest();
         request.setUsername("test");
@@ -87,7 +87,7 @@ class CustomerControllerTest extends ControllerTestSetup {
     }
 
     @Test
-    @WithMockUser(roles = "CUSTOMER")
+    @WithCustomMockUser(roles = "CUSTOMER")
     void getAuthenticatedCustomerRoleCustomer() throws Exception {
         given(customerService.findCustomerById(anyLong())).willReturn(new CustomerResponse());
 

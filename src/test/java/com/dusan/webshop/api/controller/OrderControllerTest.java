@@ -37,7 +37,7 @@ class OrderControllerTest extends ControllerTestSetup {
     private MockMvc mvc;
 
     @Test
-    @WithMockUser(roles = "CUSTOMER")
+    @WithCustomMockUser(roles = "CUSTOMER")
     void createOrderCustomer() throws Exception {
         CreateOrderRequest request = new CreateOrderRequest();
         request.setShippingStreet("shipping street");

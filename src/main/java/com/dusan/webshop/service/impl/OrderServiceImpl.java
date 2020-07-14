@@ -149,6 +149,13 @@ class OrderServiceImpl implements OrderService {
         return orderItems.stream().map(this::convertOrderItemEntityToResponse).collect(Collectors.toList());
     }
 
+    @Override
+    public List<OrderItemResponse> findAllOrderItems(long customerId, long orderId) {
+        checkIfOrderExists(orderId);
+        List<OrderItem> orderItems = orderItemRepository.findAllOrderItemsOfSpecificOrder(customerId, orderId);
+        return orderItems.stream().map(this::convertOrderItemEntityToResponse).collect(Collectors.toList());
+    }
+
     private void checkIfOrderExists(long orderId) {
         boolean exists = orderRepository.existsById(orderId);
         if (!exists)

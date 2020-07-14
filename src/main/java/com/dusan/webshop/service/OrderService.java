@@ -18,5 +18,6 @@ public interface OrderService {
     Page<OrderResponse> findAllOrders(OrderFilterParams filterParams, OrderPageParams pageParams);
     OrderResponse findOrderById(long orderId);
     List<OrderItemResponse> findAllOrderItems(long orderId);
+    List<OrderItemResponse> findAllOrderItems(long customerId, long orderId);
     Page<OrderResponse> findAllCustomerOrders(long customerId, OrderFilterParams filterParams, OrderPageParams pageParams);
 }
