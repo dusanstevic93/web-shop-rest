@@ -1,5 +1,6 @@
 package com.dusan.webshop.dao;
 
+import com.dusan.webshop.dao.projection.AuthenticationProjection;
 import com.dusan.webshop.entity.Address;
 import com.dusan.webshop.entity.Customer;
 import com.dusan.webshop.entity.UserRole;
@@ -47,5 +48,17 @@ class UserRepositoryTest {
 
         // then
         assertNotNull(savedCustomer.getId());
+    }
+
+    @Test
+    @Sql("/scripts/insert-test-data.sql")
+    void getAuthenticationProjection() {
+        AuthenticationProjection projection = userRepository.getAuthenticationProjection("test username").get();
+        assertAll(
+                () -> assertEquals("test username", projection.getUsername()),
+                () -> assertEquals("test password", projection.getPassword()),
+                () -> assertEquals(0, projection.getUserId()),
+                () -> assertEquals(0, projection.getRoleId())
+        );
     }
 }
