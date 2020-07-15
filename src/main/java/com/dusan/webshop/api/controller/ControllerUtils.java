@@ -25,7 +25,7 @@ class ControllerUtils {
         if (image.isEmpty())
             throw new EmptyFileException("File must not be empty");
 
-        if (!image.getContentType().equals("image/jpeg"))
+        if (!image.getContentType().equals("image/jpeg") && !image.getContentType().equals("image/png"))
             throw new UnsupportedFileFormatException(image.getContentType() + " is not supported");
     }
 }
