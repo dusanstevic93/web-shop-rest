@@ -1,6 +1,7 @@
 package com.dusan.webshop.api.controller;
 
 import com.dusan.webshop.api.docs.Descriptions;
+import com.dusan.webshop.api.docs.OpenApiConfig;
 import com.dusan.webshop.dto.request.CreateProductBrandRequest;
 import com.dusan.webshop.dto.request.params.ProductBrandPageParams;
 import com.dusan.webshop.dto.response.PageResponseWrapper;
@@ -9,6 +10,7 @@ import com.dusan.webshop.service.ProductBrandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
@@ -29,6 +31,7 @@ public class ProductBrandController {
     private ProductBrandService brandService;
 
     @Operation(summary = "Create a new product brand", description = Descriptions.CREATE_PRODUCT_BRAND,
+                security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
                 responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
                              @ApiResponse(responseCode = "403", description = "unauthorized access")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -46,6 +49,7 @@ public class ProductBrandController {
     }
 
     @Operation(summary = "Update a product brand", description = Descriptions.UPDATE_PRODUCT_BRAND,
+                security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
                 responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
                              @ApiResponse(responseCode = "404", description = "product brand is not found")})
     @PutMapping(value = "/{brandId}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -62,6 +66,7 @@ public class ProductBrandController {
     }
 
     @Operation(summary = "Upload a product brand logo", description = Descriptions.UPLOAD_PRODUCT_BRAND_LOGO,
+                security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
                 responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
                              @ApiResponse(responseCode = "404", description = "product brand is not found"),
                              @ApiResponse(responseCode = "422", description = "image upload error")})

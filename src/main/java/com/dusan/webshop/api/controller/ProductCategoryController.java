@@ -1,11 +1,13 @@
 package com.dusan.webshop.api.controller;
 
 import com.dusan.webshop.api.docs.Descriptions;
+import com.dusan.webshop.api.docs.OpenApiConfig;
 import com.dusan.webshop.dto.request.CreateProductCategoryRequest;
 import com.dusan.webshop.dto.response.ProductCategoryResponse;
 import com.dusan.webshop.service.ProductCategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,7 @@ public class ProductCategoryController {
     }
 
     @Operation(summary = "Create a new product category", description = Descriptions.CREATE_PRODUCT_CATEGORY,
+                security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
                 responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
                              @ApiResponse(responseCode = "403", description = "unauthorized")})
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,6 +44,7 @@ public class ProductCategoryController {
     }
 
     @Operation(summary = "Create a new product subcategory", description = Descriptions.CREATE_PRODUCT_SUBCATEGORY,
+            security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
             responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
                          @ApiResponse(responseCode = "403", description = "unauthorized"),
                          @ApiResponse(responseCode = "404", description = "parent category is not found")})
@@ -51,6 +55,7 @@ public class ProductCategoryController {
     }
 
     @Operation(summary = "Update a product category", description = Descriptions.UPDATE_PRODUCT_CATEGORY,
+                security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
                 responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
                              @ApiResponse(responseCode = "403", description = "unauthorized"),
                              @ApiResponse(responseCode = "404", description = "category is not found")})
@@ -60,6 +65,7 @@ public class ProductCategoryController {
     }
 
     @Operation(summary = "Upload a category image", description = Descriptions.UPLOAD_CATEGORY_IMAGE,
+            security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
             responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
                          @ApiResponse(responseCode = "404", description = "product brand is not found"),
                          @ApiResponse(responseCode = "422", description = "image upload error")})

@@ -1,6 +1,7 @@
 package com.dusan.webshop.api.controller;
 
 import com.dusan.webshop.api.docs.Descriptions;
+import com.dusan.webshop.api.docs.OpenApiConfig;
 import com.dusan.webshop.dto.request.UpdateCustomerRequest;
 import com.dusan.webshop.dto.request.params.PageParams;
 import com.dusan.webshop.dto.response.CustomerResponse;
@@ -8,6 +9,7 @@ import com.dusan.webshop.dto.response.PageResponseWrapper;
 import com.dusan.webshop.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Tag(name = "Customer")
+@SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME)
 @AllArgsConstructor
 @RestController
 @RequestMapping("/customers")

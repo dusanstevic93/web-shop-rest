@@ -1,6 +1,7 @@
 package com.dusan.webshop.api.controller;
 
 import com.dusan.webshop.api.docs.Descriptions;
+import com.dusan.webshop.api.docs.OpenApiConfig;
 import com.dusan.webshop.dto.request.CreateOrderRequest;
 import com.dusan.webshop.dto.request.params.OrderFilterParams;
 import com.dusan.webshop.dto.request.params.OrderPageParams;
@@ -11,6 +12,7 @@ import com.dusan.webshop.dto.response.PageResponseWrapper;
 import com.dusan.webshop.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
@@ -25,6 +27,7 @@ import java.util.List;
 
 
 @Tag(name = "Order")
+@SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME)
 @AllArgsConstructor
 @RestController
 public class OrderController {

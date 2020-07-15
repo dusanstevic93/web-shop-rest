@@ -1,5 +1,6 @@
 package com.dusan.webshop.api.controller;
 
+import com.dusan.webshop.api.docs.OpenApiConfig;
 import com.dusan.webshop.dto.request.CreateProductReviewRequest;
 import com.dusan.webshop.dto.request.params.ProductReviewFilterParams;
 import com.dusan.webshop.dto.request.params.ProductReviewPageParams;
@@ -8,6 +9,7 @@ import com.dusan.webshop.dto.response.ProductReviewResponse;
 import com.dusan.webshop.service.ProductReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
@@ -28,6 +30,7 @@ public class ProductReviewController {
     private ProductReviewService reviewService;
 
     @Operation(summary = "Create a product review", description = "",
+                security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
                 responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
                              @ApiResponse(responseCode = "403", description = "unauthorized access"),
                              @ApiResponse(responseCode = "404", description = "product is not found"),
@@ -50,6 +53,7 @@ public class ProductReviewController {
     }
 
     @Operation(summary = "Delete a product review", description = "",
+                security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
                 responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
                              @ApiResponse(responseCode = "403", description = "unauthorized access"),
                              @ApiResponse(responseCode = "404", description = "product review is not found")})

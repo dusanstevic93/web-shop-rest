@@ -1,6 +1,7 @@
 package com.dusan.webshop.api.controller;
 
 import com.dusan.webshop.api.docs.Descriptions;
+import com.dusan.webshop.api.docs.OpenApiConfig;
 import com.dusan.webshop.dto.request.CreateProductRequest;
 import com.dusan.webshop.dto.request.params.ProductFilterParams;
 import com.dusan.webshop.dto.request.params.ProductPageParams;
@@ -9,6 +10,7 @@ import com.dusan.webshop.dto.response.ProductResponse;
 import com.dusan.webshop.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
@@ -30,6 +32,7 @@ public class ProductController {
 
 
     @Operation(summary = "Create a new product", description = Descriptions.CREATE_PRODUCT,
+                security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
                 responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
                              @ApiResponse(responseCode = "403", description = "unauthorized access"),
                              @ApiResponse(responseCode = "404", description = "product category or product brand is not found")})
@@ -40,6 +43,7 @@ public class ProductController {
     }
 
     @Operation(summary = "Update an existing product", description = Descriptions.UPDATE_PRODUCT,
+                security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
                 responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
                              @ApiResponse(responseCode = "403", description = "unauthorized access"),
                              @ApiResponse(responseCode = "404", description = "product category or product brand is not found")})
@@ -67,6 +71,7 @@ public class ProductController {
     }
 
     @Operation(summary = "Upload a product main image", description = Descriptions.UPLOAD_MAIN_IMAGE,
+                security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
                 responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
                              @ApiResponse(responseCode = "403", description = "unauthorized access"),
                              @ApiResponse(responseCode = "404", description = "product is not found"),
@@ -79,6 +84,7 @@ public class ProductController {
     }
 
     @Operation(summary = "Upload a product image", description = Descriptions.UPLOAD_IMAGE,
+            security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
             responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
                          @ApiResponse(responseCode = "403", description = "unauthorized access"),
                          @ApiResponse(responseCode = "404", description = "product is not found"),
@@ -91,6 +97,7 @@ public class ProductController {
     }
 
     @Operation(summary = "Delete a product image", description = Descriptions.DELETE_IMAGE,
+            security = @SecurityRequirement(name = OpenApiConfig.BEARER_TOKEN_SCHEME),
             responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
                          @ApiResponse(responseCode = "403", description = "unauthorized access"),
                          @ApiResponse(responseCode = "404", description = "product is not found"),
