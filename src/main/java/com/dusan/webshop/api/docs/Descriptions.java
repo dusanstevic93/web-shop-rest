@@ -8,36 +8,36 @@ public class Descriptions {
 
     // authentication controller
     public static final String AUTHENTICATE = "Authenticate a user by providing username and password. " +
-            "If the authentication is successful, bearer token is returned in response body.";
+            "If the authentication is successful, a bearer token is returned in response body.";
 
     // registration controller
     public static final String REGISTER_CUSTOMER = "Insert a new customer in a database. " +
             "User needs to be ANONYMOUS to perform this operation";
 
     // customer controller
-    public static final String GET_AUTHENTICATED_CUSTOMER = "Retrieve an authenticated customer's personal information";
-    public static final String UPDATE_AUTHENTICATED_CUSTOMER = "Update an authenticated customer's personal information.";
-    public static final String GET_ANY_CUSTOMER = "Retrieve personal information of a customer found by id. " +
+    public static final String GET_AUTHENTICATED_CUSTOMER = "Retrieve an authenticated customer data.";
+    public static final String UPDATE_AUTHENTICATED_CUSTOMER = "Update an authenticated customer data.";
+    public static final String GET_ANY_CUSTOMER = "Retrieve a data of a customer found by id. " +
             "User needs to have ADMIN role to perform this operation";
-    public static final String GET_ALL_CUSTOMERS = "Retrieve personal information of all registered customers. " +
+    public static final String GET_ALL_CUSTOMERS = "Retrieve a data of all registered customers. " +
             "User needs to have ADMIN role to perform this operation";
 
     // product brand controller
-    public static final String CREATE_PRODUCT_BRAND = "Create a new product brand. User needs to have ADMIN role to perform this operation";
+    public static final String CREATE_PRODUCT_BRAND = "Create a new product brand. An user needs to have ADMIN role to perform this operation";
     public static final String GET_PRODUCT_BRAND = "Retrieve a product brand by id";
     public static final String GET_ALL_BRANDS = "Retrieve all product brands";
-    public static final String UPDATE_PRODUCT_BRAND = "Update product brand by id";
-    public static final String UPLOAD_PRODUCT_BRAND_LOGO = "Upload product brand logo. " +
-            "If product brand already have a logo, an old logo will be replaced with an uploaded logo. " +
+    public static final String UPDATE_PRODUCT_BRAND = "Update a product brand by id";
+    public static final String UPLOAD_PRODUCT_BRAND_LOGO = "Upload a product brand logo. " +
+            "If a product brand already has a logo, the old logo will be replaced with an uploaded logo. " +
             "User needs to have ADMIN role to perform this operation. Supported file extension is .jpeg";
 
     // product category controller
     public static final String CREATE_PRODUCT_CATEGORY = "Create a new product category. User needs to have ADMIN role to perform this operation";
     public static final String CREATE_PRODUCT_SUBCATEGORY = "Create a new product subcategory. User needs to have ADMIN role to perform this operation";
-    public static final String UPDATE_PRODUCT_CATEGORY = "Update product category by id. User needs to have ADMIN role to perform this operation";
+    public static final String UPDATE_PRODUCT_CATEGORY = "Update a product category by id. User needs to have ADMIN role to perform this operation";
     public static final String GET_CATEGORY_TREE = "Return all product categories organized in tree structure";
-    public static final String UPLOAD_CATEGORY_IMAGE = "Upload product category image. " +
-            "If product category already have an associated image, the old image will be replaced with a new image. " +
+    public static final String UPLOAD_CATEGORY_IMAGE = "Upload a product category image. " +
+            "If a product category already have an associated image, the old image will be replaced with a new image. " +
             "User needs to have ADMIN role to perform this operation. Supported file extension is .jpeg";
 
     // product controller

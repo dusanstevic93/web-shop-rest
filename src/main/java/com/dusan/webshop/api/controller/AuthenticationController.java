@@ -34,7 +34,7 @@ public class AuthenticationController {
 
     @Operation(summary = "Authenticate a user", description = Descriptions.AUTHENTICATE,
                 responses = {@ApiResponse(responseCode = "200", description = "successful authentication"),
-                             @ApiResponse(responseCode = "401", description = "bad credentials", content = @Content)})
+                             @ApiResponse(responseCode = "403", description = "bad credentials", content = @Content)})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public AuthenticationResponse authenticate(@Valid @RequestBody AuthenticationRequest request) {
         String username = request.getUsername();

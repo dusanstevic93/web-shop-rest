@@ -61,8 +61,8 @@ public class ProductCategoryController {
 
     @Operation(summary = "Upload a category image", description = Descriptions.UPLOAD_CATEGORY_IMAGE,
             responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
-                    @ApiResponse(responseCode = "404", description = "product brand is not found"),
-                    @ApiResponse(responseCode = "422", description = "image upload error")})
+                         @ApiResponse(responseCode = "404", description = "product brand is not found"),
+                         @ApiResponse(responseCode = "422", description = "image upload error")})
     @PostMapping(value = "/{categoryId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void uploadCategoryImage(@PathVariable long categoryId, @RequestParam("image") MultipartFile image) throws Exception {

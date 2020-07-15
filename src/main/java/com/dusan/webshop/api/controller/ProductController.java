@@ -80,9 +80,9 @@ public class ProductController {
 
     @Operation(summary = "Upload a product image", description = Descriptions.UPLOAD_IMAGE,
             responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
-                    @ApiResponse(responseCode = "403", description = "unauthorized access"),
-                    @ApiResponse(responseCode = "404", description = "product is not found"),
-                    @ApiResponse(responseCode = "422", description = "image upload error")})
+                         @ApiResponse(responseCode = "403", description = "unauthorized access"),
+                         @ApiResponse(responseCode = "404", description = "product is not found"),
+                         @ApiResponse(responseCode = "422", description = "image upload error")})
     @PostMapping(value = "/{productId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void uploadImage(@PathVariable long productId, @RequestParam("image") MultipartFile image) throws Exception {
@@ -92,9 +92,9 @@ public class ProductController {
 
     @Operation(summary = "Delete a product image", description = Descriptions.DELETE_IMAGE,
             responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
-                    @ApiResponse(responseCode = "403", description = "unauthorized access"),
-                    @ApiResponse(responseCode = "404", description = "product is not found"),
-                    @ApiResponse(responseCode = "422", description = "image upload error")})
+                         @ApiResponse(responseCode = "403", description = "unauthorized access"),
+                         @ApiResponse(responseCode = "404", description = "product is not found"),
+                         @ApiResponse(responseCode = "422", description = "image upload error")})
     @DeleteMapping(value = "/{productId}/images/{imageId}")
     public void deleteImage(@PathVariable long productId, @PathVariable String imageId) {
         productService.deleteImage(productId, imageId);

@@ -30,7 +30,7 @@ class ProductReviewControllerTest extends ControllerTestSetup {
     private MockMvc mvc;
 
     @Test
-    @WithMockUser(roles = "CUSTOMER")
+    @WithCustomMockUser(roles = "CUSTOMER")
     void createProductReviewCustomerRole() throws Exception {
         CreateProductReviewRequest request = new CreateProductReviewRequest();
         request.setProductId(1L);

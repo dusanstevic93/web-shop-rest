@@ -27,7 +27,8 @@ public class CustomerController {
     private CustomerService customerService;
 
     @Operation(summary = "Get an authenticated customer data", description = Descriptions.GET_AUTHENTICATED_CUSTOMER,
-                responses = @ApiResponse(responseCode = "200", description = "successful operation"))
+                responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
+                             @ApiResponse(responseCode = "403", description = "unauthorized access")})
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerResponse getAuthenticatedCustomer(Authentication auth) {
         long userId = (long) auth.getPrincipal();
@@ -35,7 +36,8 @@ public class CustomerController {
     }
 
     @Operation(summary = "Update an authenticated customer data", description = Descriptions.UPDATE_AUTHENTICATED_CUSTOMER,
-                responses = @ApiResponse(responseCode = "200", description = "successful operation"))
+                responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
+                             @ApiResponse(responseCode = "403", description = "unauthorized access")})
     @PutMapping(value = "/me", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateAuthenticatedCustomer(@Valid @RequestBody UpdateCustomerRequest request, Authentication auth) {
         long userId = (long) auth.getPrincipal();
