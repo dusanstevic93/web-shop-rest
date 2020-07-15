@@ -13,6 +13,6 @@ public class Config {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .components(new Components())
-                .info(new Info().title("Taxi service API"));
+                .info(new Info().title("WEB SHOP API"));
     }
 }

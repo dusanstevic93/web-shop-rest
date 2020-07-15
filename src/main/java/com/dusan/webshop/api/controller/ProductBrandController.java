@@ -28,39 +28,32 @@ public class ProductBrandController {
 
     private ProductBrandService brandService;
 
-    @Operation(summary = "Create new product brand", description = Descriptions.CREATE_PRODUCT_BRAND,
-                responses = {
-                             @ApiResponse(responseCode = "201", description = "Successful operation"),
-                             @ApiResponse(responseCode = "400", description = "Required field is invalid or missing"),
-                             @ApiResponse(responseCode = "403", description = "Unauthorized access")
-                             })
+    @Operation(summary = "Create a new product brand", description = Descriptions.CREATE_PRODUCT_BRAND,
+                responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
+                             @ApiResponse(responseCode = "403", description = "unauthorized access")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void createProductBrand(@Valid @RequestBody CreateProductBrandRequest request) {
         brandService.createProductBrand(request);
     }
 
-    @Operation(summary = "Get product brand", description = Descriptions.GET_PRODUCT_BRAND,
-                responses = {
-                             @ApiResponse(responseCode = "200", description = "Successful operation"),
-                             @ApiResponse(responseCode = "404", description = "Product brand is not found", content = @Content)
-                })
+    @Operation(summary = "Get a product brand", description = Descriptions.GET_PRODUCT_BRAND,
+                responses = {@ApiResponse(responseCode = "200", description = "Successful operation"),
+                             @ApiResponse(responseCode = "404", description = "Product brand is not found", content = @Content)})
     @GetMapping(value = "/{brandId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProductBrandResponse getProductBrandById(@PathVariable long brandId) {
         return brandService.findProductBrandById(brandId);
     }
 
-    @Operation(summary = "Update product brand", description = Descriptions.UPDATE_PRODUCT_BRAND,
-                responses = {
-                             @ApiResponse(responseCode = "200", description = "successful operation"),
-                             @ApiResponse(responseCode = "404", description = "Product brand is not found")
-                })
+    @Operation(summary = "Update a product brand", description = Descriptions.UPDATE_PRODUCT_BRAND,
+                responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
+                             @ApiResponse(responseCode = "404", description = "product brand is not found")})
     @PutMapping(value = "/{brandId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateProductBrand(@PathVariable long brandId, @Valid @RequestBody CreateProductBrandRequest request) {
         brandService.updateProductBrand(brandId, request);
     }
 
-    @Operation(summary = "Get all brands", description = Descriptions.GET_ALL_BRANDS,
+    @Operation(summary = "Get all product brands", description = Descriptions.GET_ALL_BRANDS,
                 responses = @ApiResponse(responseCode = "200", description = "successful operation"))
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public PageResponseWrapper<ProductBrandResponse> getAllProductBrands(@Valid @ParameterObject ProductBrandPageParams pageParams) {
@@ -68,10 +61,10 @@ public class ProductBrandController {
         return ControllerUtils.createPageResponseWrapper(page);
     }
 
-    @Operation(summary = "Upload brand logo", description = Descriptions.UPLOAD_PRODUCT_BRAND_LOGO,
-                responses = {@ApiResponse(responseCode = "201", description = "Successful operation"),
-                             @ApiResponse(responseCode = "404", description = "Product brand is not found"),
-                             @ApiResponse(responseCode = "422", description = "Image upload error")})
+    @Operation(summary = "Upload a product brand logo", description = Descriptions.UPLOAD_PRODUCT_BRAND_LOGO,
+                responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
+                             @ApiResponse(responseCode = "404", description = "product brand is not found"),
+                             @ApiResponse(responseCode = "422", description = "image upload error")})
     @PostMapping(value = "/{brandId}/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void uploadProductBrandLogo(@PathVariable long brandId, @RequestParam("image") MultipartFile image) throws Exception {

@@ -31,7 +31,7 @@ public class ProductCategoryController {
         return categoryService.getCategoryTree();
     }
 
-    @Operation(summary = "Create new product category", description = Descriptions.CREATE_PRODUCT_CATEGORY,
+    @Operation(summary = "Create a new product category", description = Descriptions.CREATE_PRODUCT_CATEGORY,
                 responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
                              @ApiResponse(responseCode = "403", description = "unauthorized")})
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,7 +40,7 @@ public class ProductCategoryController {
         categoryService.createProductCategory(request);
     }
 
-    @Operation(summary = "Create new product subcategory", description = Descriptions.CREATE_PRODUCT_SUBCATEGORY,
+    @Operation(summary = "Create a new product subcategory", description = Descriptions.CREATE_PRODUCT_SUBCATEGORY,
             responses = {@ApiResponse(responseCode = "201", description = "successful operation"),
                          @ApiResponse(responseCode = "403", description = "unauthorized"),
                          @ApiResponse(responseCode = "404", description = "parent category is not found")})
@@ -50,19 +50,19 @@ public class ProductCategoryController {
         categoryService.createProductSubcategory(parentCategoryId, request);
     }
 
-    @Operation(summary = "Update product category", description = Descriptions.UPDATE_PRODUCT_CATEGORY,
+    @Operation(summary = "Update a product category", description = Descriptions.UPDATE_PRODUCT_CATEGORY,
                 responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
                              @ApiResponse(responseCode = "403", description = "unauthorized"),
-                             @ApiResponse(responseCode = "404", description = "category not found")})
+                             @ApiResponse(responseCode = "404", description = "category is not found")})
     @PutMapping(value = "/{categoryId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateCategory(@PathVariable long categoryId, @Valid @RequestBody CreateProductCategoryRequest request) {
         categoryService.updateProductCategory(categoryId, request);
     }
 
-    @Operation(summary = "Upload category image", description = Descriptions.UPLOAD_CATEGORY_IMAGE,
-            responses = {@ApiResponse(responseCode = "200", description = "Successful operation"),
-                    @ApiResponse(responseCode = "404", description = "Product brand is not found"),
-                    @ApiResponse(responseCode = "422", description = "Image upload error")})
+    @Operation(summary = "Upload a category image", description = Descriptions.UPLOAD_CATEGORY_IMAGE,
+            responses = {@ApiResponse(responseCode = "200", description = "successful operation"),
+                    @ApiResponse(responseCode = "404", description = "product brand is not found"),
+                    @ApiResponse(responseCode = "422", description = "image upload error")})
     @PostMapping(value = "/{categoryId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void uploadCategoryImage(@PathVariable long categoryId, @RequestParam("image") MultipartFile image) throws Exception {
