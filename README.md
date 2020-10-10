@@ -1,3 +1,2 @@
 # web-shop-rest
-
-https://web-shop-rest.herokuapp.com/docs
+* Heroku deployment: https://web-shop-rest.herokuapp.com/docs
